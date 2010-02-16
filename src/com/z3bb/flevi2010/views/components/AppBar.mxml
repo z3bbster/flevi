@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" 
+	xmlns:code="http://code.google.com/p/flexlib/" 
+	xmlns:components="com.z3bb.flevi2010.views.components.*" 
+	styleName="appbar1" >
+<mx:Script>
+	<![CDATA[
+		import com.z3bb.flevi2010.model.ModelLocator;
+
+		[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+		
+	]]>
+</mx:Script>
+	<components:topMenuBar/> 
+	<mx:Label text="Document changed: {modelLocator.dataChanged}"/>  
+	<mx:Spacer width="100%"/>
+	<!--<code:PromptingTextInput id="SearchInput" prompt="MagicBar" backgroundColor="#E8E8E8" width="300"/>-->
+	<components:AutoCompleteAllClasses width="300" fontSize="12"/>
+
+</mx:ApplicationControlBar>

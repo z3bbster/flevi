@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			private function init():void {
+			   	textZ.text = "<?php\n for($i=0;$i<100;$i++){\n  echo 'line '+$i+'<br />';\n }\n?>";
+			};
+			private function syntaxColoring():void {
+				htmlZ.htmlLoader.window.highlightString(textZ.text,'php');
+			    htmlZ.htmlLoader.window.sh_highlightDocument();
+			};
+		]]>
+	</mx:Script>
+
+		<mx:TextArea id="textZ" color="#000000" 
+			fontSize="16" fontFamily="Courier New" 
+	    editable="true" wordWrap="false" 
+	    width="100%" height="100%"/>
+
+
+
+
+		
+		<mx:HTML
+			id="htmlZ"
+			location="syntax.htm"
+			enabled="true"
+			paddingLeft="4"
+			paddingRight="4"
+			width="100%" height="100%" />
+
+	<mx:Button  label="Highlight &gt;&gt;" click="syntaxColoring()"/>
+</mx:VBox>

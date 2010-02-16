@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="Mini Paint" horizontalAlign="center"
+	 paddingBottom="4" paddingLeft="0" paddingRight="0" paddingTop="0" backgroundColor="#B3B3B3" icon="@Embed(source='assets/text_signature.png')">
+<mx:Script>
+  	import mx.graphics.codec.PNGEncoder;
+  	import mx.effects.easing.*;
+  	
+  	private function changeSize():void{
+                //boxImage.width = (imageWidth*hSlider.value)/100;
+                //boxImage.height = (imageHeight*hSlider.value)/100;
+   }
+  	
+</mx:Script>
+	
+
+  <mx:Resize id="moveW" target="{canvas}" widthFrom="{canvas.width}" heightFrom="{canvas.height}" widthTo="{widthIn.value}" heightTo="{heightIn.value}" easingFunction="Back.easeOut"/>
+  <mx:Boolean id="isDrawing">false</mx:Boolean>
+
+  <mx:int id="x1"/>
+  <mx:int id="y1"/>
+  <mx:int id="x2"/>
+  <mx:int id="y2"/>
+
+  <mx:uint id="drawColor"/>
+  <mx:uint id="backColor"/>
+
+<mx:ApplicationControlBar width="100%" verticalAlign="middle" horizontalGap="2" dock="true" styleName="appbar">
+	<mx:Button label="Save Image" styleName="dockButton" icon="@Embed(source='assets/45.png')">
+	  <mx:click>
+	  var bd:BitmapData = new BitmapData(canvas.width,canvas.height);
+	  bd.draw(canvas);
+	  
+	  var ba:ByteArray = (new PNGEncoder()).encode(bd);
+	  
+	  (new FileReference()).save(ba, "doodle.png");
+	  </mx:click>
+	</mx:Button>
+	<mx:Button label="Erase" styleName="dockButton" icon="@Embed(source='assets/edit-clear.png')">
+	  <mx:click>
+	  canvas.graphics.clear();
+	  </mx:click>
+	</mx:Button>
+	<mx:VRule height="22"/>
+	<mx:Spacer width="100%"/>
+	<mx:Label text="Canvas Width:"/>
+	<mx:NumericStepper value="400" styleName="dockButton" minimum="1" maximum="3000" stepSize="10" id="widthIn" change="{moveW.play()}"/>
+	<mx:Label text="Height:"/>
+	<mx:NumericStepper value="400" minimum="1" styleName="dockButton" maximum="3000" stepSize="10" id="heightIn" change="{moveW.play()}"/>
+	<mx:VRule height="22"/>
+</mx:ApplicationControlBar>
+<mx:VBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle" backgroundAlpha="0.0">
+	
+  <mx:Panel title="MiniPaint [{canvas.width} * {canvas.height}]" backgroundColor="#FFFFFF">
+
+    <mx:Canvas id="canvas" width="400" height="400" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+      <mx:mouseDown>
+      x1 = canvas.mouseX;
+      y1 = canvas.mouseY;
+      isDrawing = true;
+      </mx:mouseDown>
+      <mx:mouseMove>
+      x2 = canvas.mouseX;
+      y2 = canvas.mouseY;
+      if (isDrawing)
+      {
+        canvas.graphics.lineStyle(hSlider.value, drawColor);
+        canvas.graphics.moveTo(x1, y1);
+        canvas.graphics.lineTo(x2, y2);
+        x1 = x2;
+        y1 = y2;
+      }
+      </mx:mouseMove>
+      <mx:mouseUp>
+      isDrawing = false;
+      </mx:mouseUp>
+    </mx:Canvas>
+
+  </mx:Panel>
+</mx:VBox>
+<mx:ApplicationControlBar width="100%" paddingLeft="4" verticalAlign="middle" horizontalGap="2" styleName="appbar">
+	<mx:Label text="Pen:"/>
+      <mx:ColorPicker change="drawColor = event.target.selectedColor" id="penColor"/>
+      <mx:NumericStepper value="1" id="penSize" styleName="dockButton" minimum="1" maximum="2000" stepSize="1"/>
+      <mx:HSlider id="hSlider" minimum="1" maximum="100" value="2" dataTipPlacement="top" tickColor="0x323232"
+            snapInterval="1" tickInterval="10" labels="['1px','100px']" allowTrackClick="true" 
+            liveDragging="true" change="changeSize()" />
+      <mx:VRule height="22"/>
+      <mx:Label text="Background:"/>
+      <mx:ColorPicker id="bgColor" change="backColor = event.target.selectedColor"/>
+      <mx:VRule height="22"/>
+      <mx:Spacer width="100%"/>
+      <mx:Label text="Position X:{canvas.mouseY} Y:{canvas.mouseY}"/>
+</mx:ApplicationControlBar>
+</mx:VBox>

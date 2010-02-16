@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="Snippets" icon="@Embed(source='assets/preferences-desktop-font.png')" backgroundColor="#ECECEC"
+	 creationComplete="init()" paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" xmlns:code="http://code.google.com/p/flexlib/" xmlns:components="com.z3bb.flevi2010.views.components.*">
+<mx:Metadata>
+	[Event(name="doubleClickDetected", type="flash.events.Event")]
+</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			
+			import mx.collections.*;
+            import mx.effects.easing.*;
+            import mx.controls.*;
+			import mx.events.*;
+			
+			import com.z3bb.flevi2010.model.ModelLocator;
+			import com.z3bb.flevi2010.tools.MxmlTagCreator;
+			
+			[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			[Bindable]public var companyData:XMLListCollection;	
+			[Bindable] public var snippetData:XML; // The external XML data
+			[Bindable]private var snippetCollection:XMLListCollection; //Dataprovider for Tree
+			[Bindable]public var selectedNode:XML; //current selected item in Tree
+
+			private var loader:URLLoader;
+			
+			[Bindable]public var arr:Array;
+			
+			private function init():void{
+				
+				arr = StyleManager.selectors;
+                arr.sort(Array.CASEINSENSITIVE);
+				
+				loadTreeData('data/treeSnippetData.xml');
+			};
+			
+			//loadd snippetTree XML file
+			public function loadTreeData(source:String):void{
+				
+				var xml:XML = new XML();
+				loader = new URLLoader(new URLRequest(source));
+				loader.addEventListener(Event.COMPLETE, handleEvent);
+			};
+			
+			//Active after loading xml for snippetTree
+			private function handleEvent(e:Event):void{
+				snippetData = XML(URLLoader(e.target).data);
+		
+				//ADD XML to XMLListCollection!!!!!!!!!!!!
+				snippetCollection = new XMLListCollection(snippetData.node);
+				SnipTree.dataProvider = snippetData;
+			};
+			 
+			
+			private function openAllNodes():void {
+                SnipTree.openItems = snippetData.node;
+            }
+
+            private function closeAllNodes():void {
+                SnipTree.openItems = [];
+            }
+            
+            private function openAndClose():void{
+			 	if(switchBtn.label == "Close all"){
+			 		switchBtn.label = "Open all"
+			 		closeAllNodes();
+			 	}else{
+			 		switchBtn.label = "Close all"
+			 		openAllNodes();
+			 	}
+			};
+			private function tree_openBranchClick(evt:MouseEvent):void {
+                var node:XML = SnipTree.selectedItem as XML;
+                var isOpen:Boolean = SnipTree.isItemOpen(node);
+                SnipTree.expandItem(node, !isOpen, true);
+                
+			};
+			
+			//how much items per leaf in tree
+			 private function tree_labelFunc(item:XML):String {
+			     var label:String = item.@label;
+			     if (SnipTree.dataDescriptor.hasChildren(item)) {
+			     	label += " [" + SnipTree.dataDescriptor.getChildren(item).length + "]";
+			     }
+			     return label;
+			 };
+			 
+			 // Event handler for the Tree control change event.
+			public function treeChanged(event:Event):void {
+				selectedNode=Tree(event.target).selectedItem as XML;
+				if (!SnipTree.dataDescriptor.hasChildren(selectedNode)) {
+					var styleName:String = selectedNode.@label;	
+					try {
+						var cssStyle:CSSStyleDeclaration = StyleManager.getStyleDeclaration(styleName);
+		                var obj:Object = new cssStyle.defaultFactory();
+		                var styles:Array = [];
+		                var key:String;
+		
+		                for (key in obj) {
+		                    styles.push({key:key, value:obj[key]});
+		                }
+		
+		                styles.sortOn("key", Array.CASEINSENSITIVE);
+		                dataGrid.dataProvider = styles;		
+					} catch (error:*){
+						//Alert.show('Currently no style properties found for this object.','Style Error');
+						dataGrid.dataProvider = [];
+					}
+						       
+				}
+				
+				
+			};
+			
+			private function handleDouble():void {
+            	var node:XML = SnipTree.selectedItem as XML;
+            	//Check if slectedNode is not a folder
+            	if (!SnipTree.dataDescriptor.hasChildren(node)) {
+            		dispatchEvent(new Event("doubleClickDetected"));
+            		//Alert.show('Tree data: <mx:'+selectedNode.@label+'></mx:'+selectedNode.@label+'>','systemBrowser.handleDouble');
+            		var doublenode:String = '<mx:'+selectedNode.@label+'>\n</mx:'+selectedNode.@label+'>\n'
+            		var singlenode:String = '<mx:'+selectedNode.@label+'/>\n';
+            		var mxmlMaker:MxmlTagCreator = new MxmlTagCreator('mx');
+            		
+            		
+            		var targetCode:TextArea = modelLocator._currentCodeTextArea;
+					var currentTxt1:String = targetCode.text.substr(0,targetCode.selectionBeginIndex);
+					var currentTxt2:String = targetCode.text.substr(targetCode.selectionEndIndex);
+					if(nodeType.selected){
+						
+						targetCode.text = currentTxt1 + mxmlMaker.makeNode(selectedNode.@label,false,idIn.text, widthIn.text, heightIn.text, xIn.text, yIn.text, styleIn.text )+ currentTxt2;
+					} else {
+						targetCode.text = currentTxt1 + mxmlMaker.makeNode(selectedNode.@label,true,idIn.text, widthIn.text, heightIn.text, xIn.text, yIn.text, styleIn.text ) + currentTxt2;
+					}
+            	} else {
+            		Alert.show('Please select a item to add it to your code. You cannot add folders items.','Snippet Error!');
+            	} 
+            	
+            	//Css proeties load on chamge          	
+            	
+            };
+            
+
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" horizontalGap="2" verticalAlign="middle">
+		
+		<mx:ComboBox id="catagoryCb" width="100%" dataProvider="{modelLocator.snippetLib}" cornerRadius="0"/>
+		<mx:Button id="b3" icon="@Embed(source='assets/list-add.png')" width="26" height="22" cornerRadius="0"/>
+		<mx:Button id="b4" width="26" icon="@Embed(source='assets/list-remove.png')" height="22" cornerRadius="0"/>
+		
+		<mx:Button label="Open all" id="switchBtn" height="22" click="openAndClose()" cornerRadius="0"/>
+	</mx:HBox>
+	<mx:VDividedBox width="100%" height="100%">
+		
+		<mx:Tree id="SnipTree" width="100%" height="100%" styleName="fseTree" click="tree_openBranchClick(event)" change="treeChanged(event)"  labelFunction="tree_labelFunc" doubleClick="handleDouble()">
+			<mx:showRoot>false</mx:showRoot>
+			<mx:doubleClickEnabled>true</mx:doubleClickEnabled>
+			<mx:openEasingFunction>Back.easeOut</mx:openEasingFunction>
+			<mx:openDuration>400</mx:openDuration>
+			<mx:labelField>@label</mx:labelField>
+			<mx:defaultLeafIcon>@Embed(source='assets/application.png')</mx:defaultLeafIcon>
+			<mx:disclosureOpenIcon>@Embed(source='assets/empty.png')</mx:disclosureOpenIcon>
+			<mx:disclosureClosedIcon>@Embed(source='assets/empty.png')</mx:disclosureClosedIcon>
+			<mx:folderClosedIcon>@Embed(source='assets/folder.png')</mx:folderClosedIcon>
+			<mx:folderOpenIcon>@Embed(source='assets/document-open.png')</mx:folderOpenIcon>
+			<mx:indentation>18</mx:indentation>
+		</mx:Tree>
+		<mx:VBox width="100%" horizontalGap="2">
+			<components:AutoCompleteAllClasses id="ClassName" width="100%"/>
+			<mx:DataGrid id="dataGrid"
+		            rowHeight="22"
+		            width="100%" height="110" minHeight="110"
+		            horizontalScrollPolicy="off" styleName="fseTree1">
+		        <mx:columns>
+		            <mx:DataGridColumn dataField="key"
+		                    headerText="Style:"
+		                    itemRenderer="mx.controls.Label" />
+		            <mx:DataGridColumn dataField="value"
+		                    headerText="Value:"
+		                    itemRenderer="mx.controls.Label" />
+		        </mx:columns>
+		    </mx:DataGrid>
+		</mx:VBox>
+	    
+	</mx:VDividedBox>
+	<mx:HBox width="100%" horizontalGap="2">
+	    <code:PromptingTextInput id="idIn" width="100%" prompt="ID"/>
+	    <code:PromptingTextInput id="widthIn" width="44" prompt="Width"/>
+	    <code:PromptingTextInput id="heightIn" width="44" prompt="Height"/>
+	    <code:PromptingTextInput id="xIn" width="30" prompt="X"/>
+	    <code:PromptingTextInput id="yIn" width="30" prompt="Y"/>
+	</mx:HBox>
+	
+	<mx:HBox width="100%" horizontalGap="2">
+        <code:PromptingTextInput id="styleIn" width="100%" prompt="StyleName"/>
+        <mx:CheckBox id="nodeType" label="Single node" selected="true"/>
+        <mx:Button label="Insert Node" cornerRadius="0" click="handleDouble()"/>
+
+        
+		
+	</mx:HBox>
+</mx:VBox>

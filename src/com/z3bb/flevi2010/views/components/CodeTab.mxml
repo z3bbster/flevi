@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" label="CODETABE TESTER" verticalGap="3" name="code"
+	 paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" icon="@Embed(source='assets/flexfile.png')">
+<mx:Metadata>
+	        [Event(name="fontnameChanged", type="flash.events.Event")]
+	    </mx:Metadata>
+	    <mx:Metadata>
+	        [Event(name="fontsizeChanged", type="flash.events.Event")]
+	    </mx:Metadata>
+	    <mx:Metadata>
+	        [Event(name="fontcolorChanged", type="flash.events.Event")]
+	    </mx:Metadata>
+<mx:Script>
+	<![CDATA[
+	
+		import mx.controls.textClasses.TextRange;
+		import mx.controls.*;
+		import mx.events.*;
+		import mx.utils.StringUtil;//for number of lines
+		import flash.text.*;
+		import mx.managers.PopUpManager;
+        import mx.containers.TitleWindow;
+        import flash.geom.Point;
+		import com.z3bb.flevi2010.model.ModelLocator;
+		import com.z3bb.flevi2010.views.components.PopupAutoComplete;
+		
+		[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+		public var currentCodeTextArea:TextArea;
+		public var isCodeTab:Boolean = true;
+		
+		
+		private function init():void {
+			modelLocator._currentCodeTextArea = mainCode;
+			modelLocator.dataChanged = false;
+            //mainCode.text = '<?xml version="1.0" encoding="utf-8"?>\n<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml">\n<mx:Script>\n    <![CDATA[\n\n    ]]'+'>\n</mx:Script>\n<mx:Style source="style/Style.css"/>\n\n</mx:WindowedApplication>';
+			currentCodeTextArea = mainCode;
+			
+		};
+		
+		private function syntaxColoring():void {
+				htmlZ.htmlLoader.window.highlightString(mainCode.text,'php');
+			    htmlZ.htmlLoader.window.sh_highlightDocument();
+		};
+		
+		private function textArea_change(evt:Event):void {
+                callLater(updateStats, [evt]);
+                modelLocator.dataChanged = true;
+        };
+
+        private function updateStats(evt:Event):void {
+                var nLines:uint = mainCode.mx_internal::getTextField().numLines;
+                var nChars:uint = mainCode.length;
+                var str:String = "{0} characters; {1} lines";
+                info.text = StringUtil.substitute(str,
+                                    nChars,
+                                    nLines);
+        };
+		
+		//HANDLE DAMN TAB KEY CORRECT
+		private function handleKeydownTextArea(event:KeyboardEvent):void {
+	        info1.text = event.keyCode + "/" + event.charCode;
+	        
+	        if (event.keyCode == Keyboard.TAB){
+	            var textArea:TextArea = event.currentTarget as TextArea;
+	            if (textArea)
+	            {
+	                var textRange:TextRange = new TextRange(textArea, true,
+	                    textArea.selectionBeginIndex, textArea.selectionEndIndex);
+	                textRange.text = "    ";
+	                textRange.beginIndex = textRange.endIndex;
+	                // this appears to be the only way to get the TAB key to be
+	                // neutral with respect to focus change
+	                focusManager.moveFocus(FocusRequestDirection.BACKWARD);
+	            }
+	        }
+	        
+	       if( event.keyCode == 188 && event.shiftKey) {
+				var popupAuto:PopupAutoComplete = PopupAutoComplete(PopUpManager.createPopUp( this, PopupAutoComplete , true));
+				var point1:Point = new Point();
+                // Calculate position of TitleWindow in Application's coordinates. 
+                point1.x=mainCode.x;
+                point1.y=mainCode.y;                
+                point1=mainCode.localToGlobal(point1);
+                popupAuto.x=point1.x+((mainCode.width/2)- (popupAuto.width/2));
+                popupAuto.y=point1.y+((mainCode.height/2)- (popupAuto.height/2));
+             
+                // Pass a reference to the TextInput control
+                // to the TitleWindow container so that the 
+                // TitleWindow container can return data to the main application.
+                popupAuto._className = returnedName;
+               
+                //popupAuto.setFocus();
+        
+	       }
+	       
+	    };
+	    private function PopupClosedHandler():void {
+	    	var targetCode:TextArea = modelLocator._currentCodeTextArea;
+			var currentTxt1:String = targetCode.text.substr(0,targetCode.selectionBeginIndex);
+			var currentTxt2:String = targetCode.text.substr(targetCode.selectionEndIndex);
+			targetCode.text = currentTxt1 + '<mx:' + returnedName.text + '/>' + currentTxt2;
+	    }
+	    
+
+	    
+		
+
+	]]>
+</mx:Script>
+
+	<mx:VDividedBox width="100%" height="100%">
+		
+	<mx:TextArea id="mainCode" width="100%" height="100%" fontFamily="verdana" fontSize="12" change="textArea_change(event);"
+                resize="textArea_change(event);" updateComplete="syntaxColoring()" keyDown="handleKeydownTextArea(event)" />
+	<mx:HTML id="htmlZ" location="syntax.htm" width="100%" height="10%"/>
+	</mx:VDividedBox>
+	<mx:HBox width="100%">
+		
+		<mx:Text id="returnedName" width="100%" />
+		<mx:Spacer width="100%"/>
+		<mx:Label id="info"/>
+		<mx:Label id="info1"/>
+	</mx:HBox>
+		
+</mx:VBox>

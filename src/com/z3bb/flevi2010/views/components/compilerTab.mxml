@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" label="Compiler Manager" width="100%" height="100%" icon="@Embed(source='assets/script_code_red.png')" 
+	paddingTop="8" paddingBottom="4" paddingLeft="8" paddingRight="4" xmlns:code="http://code.google.com/p/flexlib/" 
+	verticalGap="2" xmlns:ns1="flexlib.containers.*"  horizontalAlign="center" borderStyle="none" xmlns:components="com.z3bb.flevi2010.views.components.*">
+	<mx:Script>
+		<![CDATA[
+			
+			import mx.collections.ArrayCollection;
+			import flash.filesystem.*;
+			
+			private var fileToOpen:File = File.documentsDirectory.resolvePath('FleVI_Projects');
+			
+        	[Bindable]
+			private var prefix: Array = [ {label:"AIR Application compiler", data:0},
+										 {label:"FLEX Application compiler", data:1},
+										 {label:"FLEX Component compiler", data:2}, 
+										 {label:"ASDOC compiler", data:3}];
+            [Bindable]
+            private var comOptions:ArrayCollection = new ArrayCollection([
+                          
+                {option: 'Accessible mode', value: true },
+                {option: 'Actionscript 3', value: true },
+                {option: 'Allow source path overlap', value: true },
+                {option: 'Debug mode', value: true },
+                {option: 'Use ECMAScript edition 3', value: true },
+                {option: 'Fonts advanced-anti-aliasing', value: true },
+                {option: 'Generate frame loader', value: true },
+                {option: 'Incremental', value: true },
+                {option: 'Keep all type selectors', value: true },
+                {option: 'Keep generated actionscript', value: true },
+                {option: 'Optimize file', value: true }
+                
+            ]);
+            
+			[Bindable]
+            private var comOptions1:ArrayCollection = new ArrayCollection([
+                          
+                {option: 'Show-actionscript-warnings', value: true },
+                {option: 'Show-binding-warnings', value: true },
+                {option: 'Show shadowed device font warnings', value: true },
+                {option: 'Show unused type selector warnings', value: true },
+                {option: 'Static link runtime shared libraries', value: true },
+                {option: 'Strict', value: true },
+                {option: 'Use resource bundle metadata', value: true },
+                {option: 'Use network', value: true },
+                {option: 'Verbose-stacktraces', value: true },
+                {option: 'Verify-digests', value: true },
+                {option: 'Varn-warning_type', value: true },
+                {option: 'Warnings', value: true }
+                
+            ]);
+            
+			private var _fileLocation:String;
+			
+			public function set lileLocation(des:String):void {
+				_fileLocation = des;
+				filePathInput.text = _fileLocation;
+			};
+			
+			
+
+
+public function selectTextFile(root:File):void
+{
+    var txtFilter:FileFilter = new FileFilter("Text", "*.mxml;*.as;*.css;");
+    root.browseForOpen("Open", [txtFilter]);
+    root.addEventListener(Event.SELECT, fileSelected);
+}
+
+private function fileSelected(event:Event):void
+{
+    filePathInput.text = fileToOpen.nativePath;
+}
+		]]>
+	</mx:Script>
+	<mx:VBox id="comSettingsBox" width="98%" verticalGap="4" paddingTop="4" paddingBottom="4" paddingLeft="4" paddingRight="4" height="100%" backgroundAlpha="0.5">
+		<mx:HBox width="100%">
+			<mx:ComboBox id="ComTypeCb" dataProvider="{prefix}" cornerRadius="3"/>
+			<mx:Button id="settingsBtn" label="SDK Settings" cornerRadius="2"/>
+			<mx:CheckBox label="Reference compiler options"/>
+			
+		</mx:HBox>
+		
+		<mx:HRule width="100%"/>
+		<mx:HBox width="100%" horizontalGap="3">				
+					<code:PromptingTextInput id="filePathInput" width="100%" prompt="Path to MXML,AS,CSS file.."/>
+					<mx:Button id="browseFileBtn" label="Browse" click="selectTextFile(fileToOpen);"/>
+				</mx:HBox>
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="outputPathInput" width="100%" prompt="Path to Output folder.."/>
+					<mx:Button id="outputFileBtn" label="Browse"/>
+				</mx:HBox>
+				
+		
+		<mx:HRule width="100%"/>
+		<mx:HBox width="100%" horizontalGap="3" verticalAlign="middle">
+				<mx:Label text="Width:" fontWeight="bold" fontSize="12"/>
+				<mx:NumericStepper minimum="1" maximum="5000" stepSize="1" value="800" id="widthNs" cornerRadius="2"/>
+				<mx:Label text="Height:" fontWeight="bold" fontSize="12"/>
+				<mx:NumericStepper value="600" minimum="1" maximum="5000" stepSize="1" id="heightNs" cornerRadius="2"/>
+				<mx:Label text="Framerate:" fontWeight="bold" fontSize="12"/>
+				<mx:NumericStepper value="24" maximum="200" minimum="1" stepSize="1" id="framerateNs" cornerRadius="2"/>
+				<mx:Label text="Color:" fontWeight="bold" fontSize="12"/>
+				<mx:ColorPicker selectedColor="#EEFFFF" id="colorCp" width="60" height="26"/>
+				<mx:Label text="bgColor:" fontWeight="bold" fontSize="12"/>
+				<mx:ColorPicker selectedColor="#FFEEFF" id="bgCp" width="60" height="26"/>
+		</mx:HBox>
+			
+		<mx:HRule width="100%"/>
+		<mx:HBox id="dgVBox" width="100%" height="100%">
+				
+				<!-- dg2 -->
+			    <mx:DataGrid id="myGrid" width="50%" height="100%" dataProvider="{comOptions}" editable="true" styleName="fseTree" color="#1C1C1C" showHeaders="false"
+			    	 dropShadowEnabled="true">  
+			        <mx:columns>
+			            <mx:DataGridColumn dataField="option" width="200" headerText="Compiler option" editable="false"/>
+			            <mx:DataGridColumn dataField="value" headerText="Value" editorDataField="cbSelected">
+			                
+			                <mx:itemEditor>
+			                    <mx:Component>
+			                        <mx:VBox backgroundColor="yellow">          
+			                            <mx:Script>
+			                                <![CDATA[
+			                                    // Define a property for returning 
+			                                    // the new value to the cell.
+			                                    [Bindable]
+			                                    public var cbSelected:Boolean;
+			                                ]]>     
+			                            </mx:Script>
+			                       
+			                            <mx:CheckBox id="followUpCB" label="{cbSelected}" height="100%" width="100%" 
+			                                selected="{data.value}" click="cbSelected=followUpCB.selected"/>
+			                        </mx:VBox>
+			                    </mx:Component>
+			                </mx:itemEditor>
+			                
+			    	</mx:DataGridColumn>
+			 	</mx:columns>       
+			 </mx:DataGrid>
+			 <!-- dg2 -->
+			 <mx:DataGrid id="myGrid1" width="50%" height="100%" dataProvider="{comOptions1}" editable="true" styleName="fseTree" color="#1C1C1C" showHeaders="false" dropShadowEnabled="true">  
+			        <mx:columns>
+			            <mx:DataGridColumn dataField="option" width="200" headerText="Compiler option" editable="false"/>
+			            <mx:DataGridColumn dataField="value" headerText="Value" editorDataField="cbSelected">
+			                
+			                <mx:itemEditor>
+			                    <mx:Component>
+			                        <mx:VBox backgroundColor="yellow">          
+			                            <mx:Script>
+			                                <![CDATA[
+			                                    // Define a property for returning 
+			                                    // the new value to the cell.
+			                                    [Bindable]
+			                                    public var cbSelected:Boolean;
+			                                ]]>     
+			                            </mx:Script>
+			                       
+			                            <mx:CheckBox id="followUpCB" label="{cbSelected}" height="100%" width="100%" 
+			                                selected="{data.value}" click="cbSelected=followUpCB.selected"/>
+			                        </mx:VBox>
+			                    </mx:Component>
+			                </mx:itemEditor>
+			                
+			    	</mx:DataGridColumn>
+			 	</mx:columns>       
+			 </mx:DataGrid>
+		</mx:HBox>	
+		
+		<mx:HRule width="100%"/>
+		<mx:Accordion id="optionAcc" width="100%" height="160" dropShadowEnabled="true" styleName="AccordionCompiler">
+			<mx:VBox label="Advanced options 1" width="100%" height="410" verticalGap="2" paddingLeft="4" paddingRight="4" paddingTop="4" paddingBottom="4" styleName="fseTree1">
+				
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="encodeInput" width="100%" prompt="actionscript-file-encoding"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="contextInput" width="100%" prompt="context-root (default null)"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="contributerInput" width="100%" prompt="contributor name"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="creatorInput" width="100%" prompt="creator name"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="cssFileInput" width="100%" prompt="defaults-css-files"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="cssUrlInput" width="100%" prompt="defaults-css-url string"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+				<code:PromptingTextInput id="defineInput" width="100%" prompt="define=NAMESPACE::variable,value"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="descInput" width="100%" prompt="description text"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<mx:VBox label="Advanced Options 2" width="100%" height="100%" verticalGap="2" paddingLeft="4" paddingRight="4" paddingTop="4" paddingBottom="4" styleName="fseTree1">
+				
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="dumpInput" width="100%" prompt="dump-config filename"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="exClassInput" width="100%" prompt="externs class_name [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="exLibInput" width="100%" prompt="external-library-path path-element [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="fontLangInput" width="100%" prompt="fonts.languages.language-range lang range"/>
+				</mx:HBox>
+				
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="fontLocalInput" width="100%" prompt="fonts.local-fonts-snapshot path_to_file"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="fontManInput" width="100%" prompt="fonts.managers manager-class [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="fontMaxCacheInput" width="100%" prompt="fonts.max-cached-fonts string"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="swcMaxGlInput" width="100%" prompt="fonts.max-glyphs-per-face string"/>
+				</mx:HBox>
+
+			</mx:VBox>
+			
+			<mx:VBox label="Advanced Options 3" width="100%" height="100%" verticalGap="2" paddingLeft="4" paddingRight="4" paddingTop="4" paddingBottom="4" styleName="fseTree1">
+				
+				
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="frameLabelInput" width="100%" prompt="frames.frame label class_name [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="includeLibInput" width="100%" prompt="include-libraries library [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="includeResInput" width="100%" prompt="include-resource-bundles bundle [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="includeInput" width="100%" prompt="includes class [...]"/>
+				</mx:HBox>
+	
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="keepAsInput" width="100%" prompt="keep-as3-metadata=class_name [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="libPath1Input" width="100%" prompt="library-path path-element [...]"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalGap="3">
+					<code:PromptingTextInput id="licenseInput" width="100%" prompt="license product_name license_key"/>
+				</mx:HBox>
+			</mx:VBox>
+			
+		</mx:Accordion>
+		
+		<!--BOTTOM BUTTONS -->
+		<mx:HRule width="100%"/>
+		<mx:HBox width="100%" horizontalGap="3">
+			<mx:Button id="compileBtn" label="COMPILE" height="40" fillAlphas="[1.0, 0.23, 1.0, 1.0]" fillColors="[#FFFFFF, #464646, #F22323, #F22323]" width="50%"/>
+			<mx:Button id="debugBtn" label="DEBUG" height="40" fillAlphas="[1.0, 0.23, 1.0, 1.0]" fillColors="[#FFFFFF, #464646, #F22323, #F22323]" width="50%"/>
+		</mx:HBox>
+			
+	</mx:VBox>
+	<components:Console height="55%"/>
+	
+	
+</mx:VBox>

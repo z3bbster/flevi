@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" 
+	xmlns:code="http://code.google.com/p/flexlib/" label="Console" xmlns:adobe="http://www.adobe.com/2006/fc">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.*;
+				[Bindable]
+		public var COMPONENTS:Array= [
+		{rank:"1", name:"AdvancedDataGrid", group:"Controls"},
+		{rank:"2", name:"Button",group:"Controls"},
+		{rank:"3", name:"CheckBox",group:"Controls"},
+		{rank:"4", name:"ColorPicker",group:"Controls"},
+		{rank:"5", name:"ComboBox",group:"Controls"},
+		{rank:"6", name:"DataGrid",group:"Controls"},
+		{rank:"7", name:"DateChooser",group:"Controls"},
+		{rank:"8", name:"DateField",group:"Controls"},
+		{rank:"9", name:"Canvas",group:"Controls"},
+		{rank:"10", name:"HSlider",group:"Controls"},
+		{rank:"11", name:"HorizontalList",group:"Controls"},
+		{rank:"12", name:"Image",group:"Controls"},
+		{rank:"13", name:"Label",group:"Controls"},
+		{rank:"14", name:"LinkButton",group:"Controls"},
+		{rank:"15", name:"List",group:"Controls"},
+		{rank:"16", name:"NumericStepper",group:"Controls"},
+		{rank:"17", name:"OLAPDataGrid",group:"Controls"},
+		{rank:"18", name:"PopupButton",group:"Controls"},
+		{rank:"19", name:"PopupMenuButton",group:"Controls"},
+		{rank:"20", name:"ProgressBar",group:"Controls"},
+		{rank:"21", name:"RadioButton",group:"Controls"},
+		{rank:"22", name:"RadioButtonGroup",group:"Controls"},
+		{rank:"23", name:"RichTextEditor",group:"Controls"},
+		{rank:"24", name:"SWFLoader",group:"Controls"},
+		{rank:"25", name:"Text",group:"Controls"},
+		{rank:"26", name:"TextArea",group:"Controls"},
+		{rank:"27", name:"TextInput",group:"Controls"},
+		{rank:"28", name:"TileList",group:"Controls"},
+		{rank:"29", name:"Tree",group:"Controls"},
+		{rank:"30", name:"VSlider",group:"Controls"},
+		{rank:"31", name:"VideoDisplay",group:"Layout"},
+		{rank:"32", name:"ApplicationControlBar",group:"Layout"},
+		{rank:"33", name:"Canvas",group:"Layout"},
+		{rank:"34", name:"ControlBar",group:"Layout"},
+		{rank:"35", name:"Form",group:"Layout"},
+		{rank:"36", name:"FormHeading",group:"Layout"},
+		{rank:"37", name:"Grid",group:"Layout"},
+		{rank:"38", name:"HBox",group:"Layout"},
+		{rank:"39", name:"HDividedBox",group:"Layout"},
+		{rank:"40", name:"HRuler",group:"Layout"},
+		{rank:"41", name:"ModuleLoader",group:"Layout"},
+		{rank:"42", name:"Panel",group:"Layout"},
+		{rank:"43", name:"Space",group:"Layout"},
+		{rank:"44", name:"Tile",group:"Layout"},
+		{rank:"45", name:"TitleWindow",group:"Layout"},
+		{rank:"46", name:"VBox",group:"Layout"},
+		{rank:"47", name:"VDividedBox",group:"Layout"},
+		{rank:"48", name:"VRuler",group:"Layout"},
+		{rank:"49", name:"Accordion",group:"Navigators"},
+		{rank:"50", name:"Canvas",group:"Navigators"},
+		{rank:"51", name:"ButtonBar",group:"Navigators"},
+		{rank:"52", name:"LinkBar",group:"Navigators"},
+		{rank:"53", name:"MenuBar",group:"Navigators"},
+		{rank:"54", name:"TabBar",group:"Navigators"},
+		{rank:"55", name:"TabNavigator",group:"Navigators"},
+		{rank:"56", name:"ToggleButtonBar",group:"Navigators"},
+		{rank:"57", name:"ViewStack",group:"Navigators"},
+		{rank:"58", name:"FileSystemComboBox",group:"Adobe AIR"},
+		{rank:"59", name:"FileSystemDataGrid",group:"Adobe AIR"},
+		{rank:"60", name:"FileSystemHistoryButton",group:"Adobe AIR"},
+		{rank:"61", name:"FileSystemList",group:"Adobe AIR"},
+		{rank:"62", name:"FileSystemTree",group:"Adobe AIR"},
+		{rank:"63", name:"HTML",group:"Adobe AIR"},
+		{rank:"64", name:"AreaChart",group:"Chart"},
+		{rank:"65", name:"BoxChart",group:"Chart"},
+		{rank:"66", name:"BubbleChart",group:"Chart"},
+		{rank:"67", name:"CandleStickChart",group:"Chart"},
+		{rank:"68", name:"ColumnChart",group:"Chart"},
+		{rank:"69", name:"HCOLChart",group:"Chart"},
+		{rank:"70", name:"Legend",group:"Chart"},
+		{rank:"71", name:"LineChart",group:"Chart"},
+		{rank:"72", name:"PieChart",group:"Chart"},
+		{rank:"72", name:"PlotChart",group:"Chart"}];
+		private function init():void {
+			OutputText.htmlText += '[<b>Aconsole</b>] Version 0.01 Alpha.\nCopyright (c) <b>Z3bbster Media</b> 2010. Some rights reserved.\nWelcome by your command!';
+		};
+		
+		private function checkCommand(command:String):void {
+			//Alert.show(command,'Enter command!');
+			if(command == '' )	treatIt('<font color="#EE1122"><b>ERROR, UNKNOWN COMMAND!<b></font> -> Please try again!');
+			if(command == 'home' )	treatIt('[<b>Aconsole</b>] Version 0.01 Alpha.\nCopyright (c) <b>Z3bbster Media</b> 2010. Some rights reserved.\nWelcome by your command!');
+			if(command == 'cls' )	treatIt('');
+			if(command == 'help' )	treatIt( '-------- HELP Aconsole --------\nCommands:\n-cls - Clear screen\n-help - see this help menu.\n-exit - Exit Aconsole.\n--------------------------------- ');
+		}
+		
+		private function treatIt(output:String):void {
+			//reset input
+			ConsoleInput.text = '';
+			//clear or add output text
+			if( output == '') {
+				OutputText.text = '';
+			} else {
+				OutputText.htmlText += '\n'+ output;
+			}
+		}
+	]]>
+</mx:Script>
+	<mx:TextArea id="OutputText" width="100%" height="100%" fontSize="11" creationComplete="init()" backgroundColor="#000000" color="#F4F4F4" backgroundAlpha="0.8" fontFamily="Verdana"/>
+	<code:PromptingTextInput id="ConsoleInput" prompt="Type command" width="100%" backgroundColor="#C0C0C0" enter="checkCommand(ConsoleInput.text)"/>
+	<adobe:AutoComplete dataProvider="{COMPONENTS}" width="100%"/>
+</mx:VBox>

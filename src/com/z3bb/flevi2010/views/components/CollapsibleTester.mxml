@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="CollapsibleTeser" xmlns:tools="com.z3bb.flevi2010.tools.*" xmlns:components="com.z3bb.flevi2010.views.components.*">
+<tools:CollapsibleAccordion height="100%" openSize="300" barSize="26" currentWidth="26"
+	drawerButtonStyle="drawerButton"
+      closeButtonStyle="drawerCloseRight"
+      accordianStyle="drawerAccordion" orientation="right">
+	<components:SnippetTab/>
+	<components:systemBrowser/>
+	<components:SearchReplaceTab/>
+	<components:CharTool/>
+	<components:Console/>
+</tools:CollapsibleAccordion>
+<mx:Panel width="100%" height="100%" title="Panel">
+	
+</mx:Panel>
+</mx:HBox>

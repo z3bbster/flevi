@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ButtonBar xmlns:mx="http://www.adobe.com/2006/mxml" buttonStyleName="dockButton">
+	<mx:Script>
+		<![CDATA[
+			[Bindable]
+            [Embed("assets/brick_go.png")]
+            private var compileStartIcon:Class;
+
+            [Bindable]
+            [Embed("assets/brick_delete.png")]
+            private var compileStopIcon:Class;
+            
+            [Bindable]
+            [Embed("assets/bricks.png")]
+            private var compileOptIcon:Class;
+            
+            [Bindable]
+            [Embed("assets/bug_error.png")]
+            private var debugStartIcon:Class;
+
+            [Bindable]
+            [Embed("assets/bug_delete.png")]
+            private var debugStopIcon:Class;
+            
+            [Bindable]
+            [Embed("assets/folder_bug.png")]
+            private var debugOptIcon:Class;
+		]]>
+	</mx:Script>
+	<mx:dataProvider>
+              <mx:Array id="myArray">
+		        <mx:Object label="" icon="{compileStartIcon}"  toolTip="Start compiling current Script." />
+		        <mx:Object label="" icon="{compileStopIcon}"  toolTip="Stop current compile process."/>
+		        <mx:Object label="" icon="{compileOptIcon}"  toolTip="Open Compiler manager."/>
+		        <mx:Object label="" icon="{debugStartIcon}"  toolTip="Start debugging current Script." />
+		        <mx:Object label="" icon="{debugStopIcon}"  toolTip="Stop debugging current Script."/>
+		        <mx:Object label="" icon="{debugOptIcon}"  toolTip="Open Debugger preferences."/>
+		    </mx:Array>
+            </mx:dataProvider>
+</mx:ButtonBar>

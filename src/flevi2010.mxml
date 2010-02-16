@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication width="1024" height="768" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:components="com.z3bb.flevi2010.views.components.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:tools="com.z3bb.flevi2010.tools.*">
+<mx:Script>
+	<![CDATA[
+		import mx.events.IndexChangedEvent;
+		import flexlib.events.SuperTabEvent;
+		import com.z3bb.flevi2010.model.ModelLocator;
+		import mx.controls.*;
+		import mx.effects.easing.*;
+		import com.z3bb.flevi2010.views.components.CodeTab;
+
+
+		[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+		
+		private function tabChange(e:Event):void {
+				//Alert.show('TAB Event: '+MainBar.selectedChild.name,'TabChange');
+			if (MainBar.getChildAt(MainBar.selectedIndex) is CodeTab) {
+				Alert.show('TAB is a codeTab class!: '+MainBar.selectedChild.name,'TabChange');
+				var target:CodeTab = MainBar.getChildAt(MainBar.selectedIndex) as CodeTab;
+				if (target.currentCodeTextArea) Alert.show('has codeTextArea');
+			}
+				
+			if (MainBar.selectedChild.name == 'code')  {
+				//modelLocator._currentCodeTextArea = event.target.selectedChild.currentCodeTextArea;
+				//Alert.show('TAB Event: '+MainBar.selectedChild.name,'TabChange');
+			} else {
+				//Alert.show('Not a code tab','TabChange');
+			}
+			
+		};
+		
+		private function checkForSave():void {
+			
+
+		}
+	]]>
+</mx:Script>
+	<mx:Style source="style/TwanoStyle.css"/>
+	<mx:Sequence id="FXin" duration="400">
+		<!--<mx:Move xFrom="{0-vsMain.width}" xTo="0" easingFunction="Back.easeOut"/>-->
+		<!--<mx:Move id="moveOut" yFrom="{0-vsMain.height}" yTo="0" easingFunction="Back.easeOut"/>-->
+		<mx:Fade alphaTo="1.0" alphaFrom="0" easingFunction="Back.easeOut"/>
+	</mx:Sequence>
+	<mx:Sequence id="FXout" duration="300">
+		<!--<mx:Move yFrom="0" yTo="{vsMain.height}" easingFunction="Back.easeIn"/>-->
+		<!--<mx:Move xFrom="0" xTo="{vsMain.width}" easingFunction="Back.easeOut"/> -->
+		<mx:Fade alphaTo="0.0" alphaFrom="1.0" easingFunction="Back.easeOut"/>
+	</mx:Sequence>
+	<components:AppBar dock="true"/>
+	
+	<components:IconBar/>
+	<mx:HBox width="100%" height="100%" paddingLeft="6" paddingRight="6" paddingBottom="12" y="48" horizontalGap="6">
+		
+	<!--<mx:HDividedBox width="100%" height="100%">
+		<mx:VDividedBox width="310" height="100%">
+			<mx:VBox width="100%" height="100%" paddingBottom="3">
+				
+				<code:SuperTabNavigator id="SideBar" width="100%" height="100%" dropShadowEnabled="true" paddingTop="0" backgroundColor="#ECECEC" fontSize="12">
+					<components:SnippetTab showEffect="FXin" hideEffect="FXout"/>
+					<components:systemBrowser showEffect="FXin" hideEffect="FXout"/>
+					<components:SearchReplaceTab showEffect="FXin" hideEffect="FXout"/>
+					
+				</code:SuperTabNavigator>
+			</mx:VBox>
+			
+			<code:SuperTabNavigator id="SideBar2" width="100%" height="200" minHeight="200" dropShadowEnabled="true" paddingTop="0" backgroundColor="#ECECEC" fontSize="12">
+				
+				<components:Console showEffect="FXin" hideEffect="FXout"/>
+				<components:ClipBoard showEffect="FXin" hideEffect="FXout"/>
+				<components:CharTool showEffect="FXin" hideEffect="FXout"/>
+			</code:SuperTabNavigator>
+			
+
+		</mx:VDividedBox>-->
+		<tools:CollapsibleAccordion height="100%" openSize="340" barSize="30" currentWidth="30" 
+	drawerButtonStyle="drawerButton"
+      closeButtonStyle="drawerCloseRight"
+      accordianStyle="drawerAccordion" orientation="right">
+	<components:SnippetTab/>
+	<components:systemBrowser/>
+	<components:SearchReplaceTab/>
+	<components:CharTool/>
+
+	<components:stringConverter/>
+</tools:CollapsibleAccordion>
+
+
+		<code:SuperTabNavigator id="MainBar" width="100%" height="100%" dropShadowEnabled="true" fontSize="12" paddingTop="0" backgroundColor="#ECECEC" 
+			 tabClose="checkForSave()" change="tabChange(event)">
+			<components:CodeTab showEffect="FXin" hideEffect="FXout"/>
+			<components:searchTest/>
+			<components:htmlTab/>
+			<components:MiniPaint showEffect="FXin" hideEffect="FXout"/>
+			<components:CollapsibleTester/>
+			<components:TraceTestr/>
+		</code:SuperTabNavigator>
+
+	</mx:HBox>
+	<!--</mx:HDividedBox>-->
+</mx:WindowedApplication>

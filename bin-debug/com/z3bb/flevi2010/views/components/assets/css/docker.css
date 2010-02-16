@@ -1,0 +1,382 @@
+/*
+Please remember to add the following effects to the main application.
+
+	<mx:Move duration="250" id="DockerMove"/>
+	<mx:Fade duration="250" id="DockerFade"/>d5dce2
+*/
+@font-face {
+   src:local("Gisha");
+   fontFamily: GishaEmbedded;
+}
+@font-face {
+   src:local("Gisha");
+   fontFamily: GishaEmbedded;
+   fontWeight: bold;
+}
+@font-face {
+   src:local("Gisha");
+   fontFamily: GishaEmbedded;
+   fontWeight: italic;
+}
+
+@font-face {
+   src:local("Calibri");
+   fontFamily: CalibriEmbedded;
+}
+@font-face {
+   src:local("Calibri");
+   fontFamily: CalibriEmbedded;
+   fontWeight: bold;
+}
+@font-face {
+   src:local("Calibri");
+   fontFamily: CalibriEmbedded;
+   fontWeight: italic;
+}
+@font-face {
+   src:local("Corbel");
+   fontFamily: DinaEmbedded;
+}
+@font-face {
+   src:local("Corbel");
+   fontFamily: DinaEmbedded;
+   fontWeight: bold;
+}
+Application 
+{
+   backgroundColor: #c0ef92;/*#0099cc;*/
+  	backgroundGradientColors: #EBEBEB,#C3C3C3;/* #, #999999;f3f2f4 #; */
+   backgroundGradientAlphas: 0.42, 0.72;
+   dropShadowColor: #3f3f3f;
+   fontFamily: DinaEmbedded;/*embed font*/
+   fontSize: 12;
+   fontAntiAliasType: 'advanced';
+   fontGridFitType: 'subpixel';
+   fontSharpness:  -400;
+   fontThickness: 1; 
+   
+
+}
+.AccordionCompiler {
+   headerStyleName: "myaccordionHeader";
+}
+
+.myaccordionHeader {
+   /*color: #90B480;*/
+   fontSize: 12;
+   fontWeight: bold;
+}
+
+
+ToolTip {
+   backgroundAlpha: 0.72;
+   paddingLeft: 2;
+   paddingRight: 2;
+   backgroundColor: #000000;
+   color: #ffffff;
+   fontFamily: GishaEmbedded;
+   fontSize: 11;
+}
+Panel{
+	backgroundAlpha: 0.92;
+}
+Alert{
+color : #333333;
+font-size :12;
+title-style-name : 'alertTitle';
+header-height:28;
+border-thickness: 3;
+drop-shadow-enabled: true;
+drop-shadow-color :#000000;
+background-color: #ffffff;
+backgroundAlpha: 0.72;
+corner-radius :0;
+border-style :solid;
+header-colors : #000000, #555555;
+footer-colors : #a1a1a1, #ffffff;
+border-color : #a6a6a6;
+modalTransparencyColor: #727272;/*haloOrange#000000;*/
+creationCompleteEffect: AlertFx;
+hideEffect: AlertFxOut;
+}
+
+.alertTitle{
+font-family :GishaEmbedded;
+font-size :12;
+font-weight :bold;
+text-align :left;
+color :#ffffff;
+}
+List{
+	verticalScrollBarStyleName: "fseVerticalScrollBar";
+}
+
+ApplicationControlBar 
+{
+   highlightAlphas: 0.29, 0.11;
+   fillAlphas: 0.19, 0.39;
+   fillColors: #000000 , #ffffff;
+   backgroundColor: #F3FFDF;
+   /* 
+   	Standard fleVI green: 90B480
+   	Very nice dark grey: 262625
+    Old other: 99cc66 , 163b6b, 4C8A4E, F0A324
+   */
+   backgroundAlpha: 0.68;   
+}
+MenuBar {
+  /* color: #dce0e3;*/
+	selectionColor: #0099ff;
+   cornerRadius: 3;
+   backgroundAlpha: 0.81;
+   backgroundColor: #0099cc;
+   focusAlpha: 0.5;
+   fillAlphas: 0.6, 0;
+   fillColors: #ffffff, #666666;
+   themeColor: haloOrange;
+   menuStyleName: myCustomMenuBarStyleName;
+
+
+}
+.myCustomMenuBarStyleName {
+	color: #161616;
+    borderAlpha: 0.50;
+
+
+
+}
+
+Button 
+{
+   cornerRadius: 2;
+}
+ToggleButtonBar {
+   buttonHeight: 24;
+   buttonWidth: 24;
+}
+
+Docker
+{
+	paddingLeft: 0;
+	dockingAreaStyleName: "dockingArea";
+	rowStyleName: "dockingRow";
+	backgroundAlpha: 0.41;
+	
+}
+
+DockableToolBar
+{
+	addedEffect: "DockerFade";
+	borderStyle: "inset";
+	horizontalGap: 2;
+	paddingBottom: 6;
+	paddingLeft: 6;
+	paddingRight: 6;
+	paddingTop: 5;
+	backgroundColor: #ABA89F; /*4D7388;*/
+	backgroundAlpha: 0.32;
+
+}	
+
+.dockingArea
+{
+	horizontalScrollPolicy: "off";
+	verticalGap: 0;
+	borderStyle: "applicationControlBar";
+	dropShadowEnabled: true;
+	
+	fillAlphas: 0.13, 0.39;
+   fillColors: #000000 , #ffffff;
+   
+	backgroundColor: #E4E6DB; /*4D7388;*/
+	backgroundAlpha: 0.72;	
+}
+
+.dockingRow
+{
+	horizontalGap: 1;
+	addedEffect: "DockerFade";
+	removedEffect: "DockerFade";
+}
+
+ProgressBar {
+   barColor: #ffcf00;
+   trackHeight: 8;
+   verticalGap: 0;
+   fontSize: 9;
+    fontFamily: Verdana;
+}
+.leftMenuVBox {
+	backgroundColor: #d1d3c5;/* #c6c2b7;backgroundAlpha: .75;*/
+	
+}
+
+.fseTree {
+	color: #ffffff;
+	backgroundColor: #837B67;
+	backgroundAlpha: .40;
+	rollOverColor: #c7c7c7;
+	borderStyle: solid;
+	borderColor: #A29A88;
+	borderAlpha: .80;
+	
+	selectionColor: #ffffff;
+	indentation: 10;
+	verticalScrollBarStyleName: "fseVerticalScrollBar";
+}	
+
+.fseTree1 {
+	color: #000000;
+	backgroundColor: #837B67;
+	backgroundAlpha: .40;
+	rollOverColor: #c7c7c7;
+	borderStyle: solid;
+	borderColor: #A29A88;
+	borderAlpha: .80;
+	
+	selectionColor: #ffffff;
+	indentation: 10;
+	verticalScrollBarStyleName: "fseVerticalScrollBar";
+}	
+
+.fseVerticalScrollBar {
+	downArrowUpSkin: Embed(source="/assets/bullet_add.png");
+	downArrowOverSkin: Embed(source="/assets/bullet_add.png");
+	downArrowDownSkin: Embed(source="/assets/bullet_add.png");
+	upArrowUpSkin: Embed(source="/assets/bullet_delete.png");
+	upArrowOverSkin: Embed(source="/assets/bullet_delete.png");
+	upArrowDownSkin: Embed(source="/assets/bullet_delete.png");
+	thumbDownSkin: Embed(source="/assets/thumb.png",
+		scaleGridLeft="7", scaleGridTop="5", scaleGridRight="8", scaleGridBottom="7");
+	thumbUpSkin: Embed(source="/assets/thumb.png",
+		scaleGridLeft="7", scaleGridTop="5", scaleGridRight="8", scaleGridBottom="7");
+	thumbOverSkin: Embed(source="/assets/thumb.png",
+		scaleGridLeft="7", scaleGridTop="5", scaleGridRight="8", scaleGridBottom="7");
+	trackSkin: Embed(source="/assets/scrolltrack.png",
+		scaleGridLeft="7", scaleGridTop="4", scaleGridRight="8", scaleGridBottom="6" );	
+	
+}
+
+DataGrid {
+   backgroundAlpha: 0.38;
+   alternatingItemColors: #e7e7e7, #eff1f2;
+   verticalGridLines: false;
+   rollOverColor: #837b67;
+   selectionColor: #ffffff;
+   verticalScrollBarStyleName: "fseVerticalScrollBar";
+}
+.myText {
+      fontWeight: "bold";
+      fontSize: 10;
+      color: #FFFFFF;
+ }
+   
+.filled {
+			border-style: solid;
+			border-thickness: 0;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			fill-colors: #D1D3C5,#C2C4BF; /*#998F77 ,#c6c2b7 ; #0099FF, #000099; */
+			corner-radius: 0;
+
+			
+			
+			
+}
+.filled1 {
+			border-style: solid;
+			border-thickness: 0;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			fill-colors: #FFFFFF,#E0DFDA; /*#998F77 ,#c6c2b7 ; #0099FF, #000099; */
+			corner-radius: 0;
+			
+			
+			
+}
+.filled2 {
+			border-style: solid;
+			border-thickness: 0;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			fill-colors: #b9b5ab,#a6a29a; /*#998F77 ,#c6c2b7 ; #0099FF, #000099; */
+			corner-radius: 0;
+			drop-shadow-enabled: false;			
+}
+.filled3 {
+			border-style: solid;
+			border-thickness: 0;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			
+			corner-radius: 0;
+			drop-shadow-enabled: false;	
+			highlightAlphas: 0.29, 0.11;
+		   
+		   fillAlphas: 0.19, 0.39;
+		   fillColors: #90B480 , #ffffff;
+		   backgroundColor: #90B480;/* 99cc66; */
+		   backgroundAlpha: 0.68;		
+}
+.filled4 {
+			border-style: solid;
+			border-thickness: 0;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			
+			corner-radius: 0;
+			drop-shadow-enabled: false;	
+			highlightAlphas: 0.29, 0.11;
+		   
+		   fillAlphas: 0.19, 0.39;
+		   fillColors: #454C5E , #21242C;
+		   backgroundColor: #90B480;/* 99cc66; */
+		   backgroundAlpha: 0.68;		
+}
+
+.filledRootNode {
+			border-style: solid;
+			border-thickness: 1;
+			borderAlpha: .60;
+			borderColor: #787878;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			fill-colors: #73655C,#97907D; /*#998F77 ,#c6c2b7 ; #0099FF, #000099; */
+			
+			corner-radius: 3;
+			drop-shadow-enabled: false;	
+			
+			highlightAlphas: 0.29, 0.11;
+
+   backgroundColor: #90B480;/* 99cc66; */	
+}
+
+
+TitleWindow {	
+	modalTransparencyColor: haloGreen;
+	backgroundColor: #90B480;
+	minWidth: 400;
+}
+.outputStyle {
+	verticalScrollBarStyleName: "fseVerticalScrollBar";
+}
+.dockBtn {
+   cornerRadius: 2;
+   highlightAlphas: 0.28, 0.14;
+   fillAlphas: 0.6, 0.4, 0.39, 0.7;
+   fillColors: #f9f6f6, #666666, #cccccc, #eeeeee;
+   width: 24;
+   backgroundAlpha: 0.68;
+}
+
+PopUpButton {
+    popUpStyleName: myCustomPopUpStyleName;
+}
+
+.myCustomPopUpStyleName {
+	fontWeight: normal;
+    textAlign: left;
+}
+
+.leftTabStyle{
+	backgroundColor: #D1D3C5;
+	paddingBottom: 5;
+	paddingLeft: 5;
+	paddingRight: 5;
+	paddingTop: 5;
+}
+

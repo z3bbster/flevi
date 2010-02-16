@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="Navigator" paddingTop="4" paddingLeft="4" paddingRight="4" paddingBottom="4"  icon="@Embed(source='assets/package-x-generic.png')">
+	<mx:Script>
+    <![CDATA[
+    import mx.events.FileEvent;
+    
+    private function onChooseFile(e:FileEvent):void {
+        output.text = e.file.name;
+    }
+        
+    ]]>
+</mx:Script>
+    
+    <mx:FileSystemTree id="fileList" width="100%" height="100%" fileChoose="onChooseFile(event)"/> 
+    <mx:Label id="output" width="100%"/>
+</mx:VBox>

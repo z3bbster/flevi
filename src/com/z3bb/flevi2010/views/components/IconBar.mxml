@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" paddingTop="8" horizontalGap="3" 
+	xmlns:components="com.z3bb.flevi2010.views.components.*" styleName="appbar" creationComplete="init()">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.*;
+        import mx.events.*;
+        import mx.controls.Alert;
+		import flash.text.Font;
+
+		import com.z3bb.flevi2010.model.ModelLocator;
+		
+		[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+		[Bindable] public var allSystemFonts:Array;
+		[Bindable] public var selectedFontName:String;
+		[Bindable] public var selectedFontSize:Number;
+		[Bindable] public var selectedFontColor:uint = 0x161616;
+        private var myMenu:Menu;
+        private var mainCode:TextArea;
+
+            // Initialize the Menu control, and specify it as the pop up object
+            // of the PopUpButton control. 
+            private function init():void {
+                mainCode = modelLocator._currentCodeTextArea;
+                //set systemfonts 
+				allSystemFonts =[];
+	            allSystemFonts = Font.enumerateFonts(true);
+	            allSystemFonts.sortOn("fontName", Array.CASEINSENSITIVE);
+	            fontCb.dataProvider = allSystemFonts;
+	            fontCb.labelField = 'fontName';
+				
+				//setup PopUpButton
+                myMenu = new Menu();
+                var dp:Object = [{label: "New File"}, {label: "New Project"}, {label: "Save File"}];        
+                myMenu.dataProvider = dp;
+                myMenu.selectedIndex = 0;       
+                myMenu.addEventListener("itemClick", itemClickHandler);
+                //popB.popUp = myMenu;
+               // popB.label = myMenu.dataProvider[myMenu.selectedIndex].label;
+            }
+
+            // Define the event listener for the Menu control's itemClick event. 
+            private function itemClickHandler(event:MenuEvent):void {
+                var label:String = event.item.label;        
+                //popTypeB.text=String("Moved to " + label);
+               // popB.label = label;
+               // popB.close();
+                myMenu.selectedIndex = event.index;
+            };
+		
+		private function closeHandler(event:Event):void {
+			selectedFontName = fontCb.text;
+			mainCode.setStyle('fontFamily',fontCb.selectedLabel);
+			dispatchEvent(new Event("fontnameChanged"));
+        };
+        
+        private function changeHandler(event:Event):void {
+			selectedFontSize = currentFontSize.value;
+			dispatchEvent(new Event("fontsizeChanged"));
+			mainCode.setStyle('fontSize',selectedFontSize);
+        };
+        
+        private function changeColorHandler(event:Event):void {
+			selectedFontColor = colorCp.selectedColor;
+			dispatchEvent(new Event("fontcolorChanged"));
+			Alert.show('ColorChanged EVENT font options to: '+colorCp.selectedColor.toString());
+				
+        };
+		
+	
+	]]>
+</mx:Script>
+	<!--<mx:PopUpButton id="popB" label="Edit" creationComplete="init();" color="0x323232" click="{Alert.show('Action: ' + popB.label);}" fontSize="12"/>-->
+	<components:openSaveBar/>
+	<mx:HBox width="100%" horizontalGap="2">
+		<mx:ComboBox id="fontCb" close="closeHandler(event);" cornerRadius="2" height="24"/>
+		<mx:VRule height="26"/>
+		<mx:NumericStepper  id="currentFontSize" change="changeHandler(event)" minimum="8" maximum="100"  value="12" stepSize="1" cornerRadius="3" height="24" fontSize="12" width="50"/>
+		<mx:VRule height="26"/>
+		<mx:ColorPicker selectedColor="#108CA6" id="colorCp" width="30" height="24" change="changeColorHandler(event)"/>
+		<mx:ColorPicker selectedColor="#A69E87" id="colorCp1" width="30" height="24"/>	
+	</mx:HBox>
+	<mx:Spacer width="100%"/>
+
+
+        <mx:Button label="Get Flex SDK" color="0x000000" />
+</mx:ApplicationControlBar>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="components.*" horizontalScrollPolicy="off" backgroundColor="#ECECEC"
+	 label="Navigator"  icon="@Embed(source='assets/package-x-generic.png')" verticalGap="3" show="init();" 
+	 xmlns:tabs="com.z3bb.flevi.view.tabs.*" paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" styleName="filled" borderStyle="none">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.easing.*;
+			import mx.events.*;
+			import mx.controls.*;
+			//import com.z3bb.flevi.events.FleviFileEvent;
+			
+			//import com.z3bb.flevi.model.ViewModelLocator;
+			//private var modelLocator:ViewModelLocator = ViewModelLocator.getInstance();
+			[Bindable]
+			public var currentFileSelected:String;
+			public var filename:String;
+			public var parentDir:String;
+			public var fullPath:String;
+			private function init():void{
+			//fcbChange.directory = new File('C://Documents and Settings/z3bb/My Documents/Flex3-AIR Projects/');
+			
+			//currentFileSelected = fileList.directory.nativePath;
+			//fileList.columns = [nameColumn, typeColumn,creationDateColumn];
+			}
+			private function fileChange(evt:Event):void{
+				filename = evt.currentTarget.selectedItem.name;
+				parentDir = evt.currentTarget.selectedItem.parent.name;
+				fullPath = evt.currentTarget.selectedItem.nativePath;				
+
+				currentFileSelected = fullPath;
+				//marq.fxText = filename;
+				//marq.play();
+
+			};
+			private function setOutput():void
+            {
+               // fileList.directory = fcbChange.directory;
+            };
+       /*      public function openDialog():void{
+            	//if (projectsTree) projectsTree.refresh();
+            	//if (fileList) fileList.refresh();
+            	var fileEvent:FleviFileEvent = new FleviFileEvent('openDialog',currentFileSelected,'private var myVar:Number = 128');
+				fileEvent.dispatch();
+            };
+            private function save():void {
+            	var fileEvent:FleviFileEvent = new FleviFileEvent('save',currentFileSelected,'private var myVar:Number = 128');
+				fileEvent.dispatch();
+            }
+            private function saveAs():void {
+            	var fileEvent:FleviFileEvent = new FleviFileEvent('saveAs',currentFileSelected,'private var myVar:Number = 128');
+				fileEvent.dispatch();
+            }
+
+            
+            private function clickOpen():void {
+				//var fileEvent:FileEvent = new FileEvent('open',currentFileSelected, 'private function FOO(){};');
+				var fileEvent:FleviFileEvent = new FleviFileEvent('open',currentFileSelected,'private var myVar:Number = 128');
+				fileEvent.dispatch();
+			} */
+			public function refresh():void{
+            	if (projectsTree) projectsTree.refresh();
+            	if (fileList) fileList.refresh();
+            };
+		]]>
+	</mx:Script>
+	<mx:XML format="e4x" id="dp2">
+<root>
+<editItem label="Fx Application" icon="flex_icon"/>
+<editItem label="Fx Component" icon="flex_icon"/>
+<editItem label="Fx Module" icon="flex_icon"/>
+<editItem label="AS File"/>
+<editItem label="AS Class"/>
+<editItem label="AS Interface"/>
+<editItem label="CSS File"/>
+<separator type="separator"/>
+<editItem label="Fx Project"/>
+<editItem label="AS Project"/>
+<editItem label="Fx Library"/>
+<separator type="separator"/>
+<editItem label="Folder"/>
+<editItem label="File"/>
+<editItem label="Other"/>
+</root>
+</mx:XML>
+
+	<mx:Parallel id="outFx" duration="500">
+	<mx:children>
+		<mx:Fade alphaTo="0.0" alphaFrom="1.0" easingFunction="Back.easeIn"/>
+		 <!-- <mx:Blur blurXFrom="0.0" blurXTo="10.0" blurYFrom="0.0" blurYTo="10.0"/> -->
+		 <!--<mx:Move id="moveIn"  xFrom="0" xTo="{browseViews.width}" easingFunction="Back.easeIn"/>-->
+	</mx:children>
+</mx:Parallel>
+<mx:Parallel id="inFx" duration="500">
+	<mx:children>
+		<mx:Fade alphaTo="1.0" alphaFrom="0" easingFunction="Back.easeOut"/>
+		<!-- <mx:Blur blurXFrom="10.0" blurXTo="0.0" blurYFrom="10.0" blurYTo="0.0"/> -->
+		<!--<mx:Move id="moveOut" xFrom="{0-browseViews.width}" xTo="0" easingFunction="Back.easeOut"/>--> 
+	</mx:children>
+</mx:Parallel>
+
+
+	<mx:ViewStack id="browseViews" width="100%" height="100%" selectedIndex="1">
+		<mx:VBox width="100%" height="100%" id="treeBrowse" verticalGap="2"  showEffect="{inFx}" hideEffect="{outFx}" icon="@Embed(source='assets/navCategories.png')">
+			<mx:FileSystemTree id="projectsTree" width="100%" height="100%"  change="fileChange(event)" directory="{File.documentsDirectory}" 
+				styleName="fseTree"  disclosureClosedIcon="@Embed(source='assets/disclose_close.png')" disclosureOpenIcon="@Embed(source='assets/disclose_open.png')"
+				    backgroundColor="#FFFFFF" themeColor="#90BDDA">
+				
+			
+				<mx:folderClosedIcon>@Embed(source='assets/folder.png')</mx:folderClosedIcon>
+				<mx:folderOpenIcon>@Embed(source='assets/document-open.png')</mx:folderOpenIcon>
+			 </mx:FileSystemTree>
+		
+		</mx:VBox>
+		<mx:VBox width="100%" height="100%" id="listBrowse" verticalGap="2"  showEffect="{inFx}" hideEffect="{outFx}" icon="@Embed(source='assets/navList.png')">
+			<mx:HBox horizontalGap="2">
+				<mx:Button id="next" width="32" toolTip="'Previous Replace in current file." cornerRadius="0" click="fileList.navigateBack();" enabled="{fileList.canNavigateBack}" height="28">
+					<mx:icon>@Embed(source='assets/go-previous.png')</mx:icon>
+				</mx:Button>
+				<mx:Button id="previous" width="32" toolTip="Next Replace in current file." cornerRadius="0"  click="fileList.navigateForward();" enabled="{fileList.canNavigateForward}" height="28">
+					<mx:icon>@Embed(source='assets/go-next.png')</mx:icon>
+				</mx:Button>
+		        
+		         </mx:HBox><!-- creationDateColumn-->
+		<mx:FileSystemDataGrid id="fileList" width="100%" height="100%" directory="{File.documentsDirectory}" 
+		 	change="fileChange(event)" horizontalScrollPolicy="off" 
+		 	extensions="[ '.as', '.mxml', 'css', 'xml' ]" dateFormatString="EEEE, MMM. D, YYYY at L:NN A" 
+		 	 sizeDisplayMode="KILOBYTE">
+		 	<mx:columns>
+		 		
+                <mx:DataGridColumn dataField="name" headerText="Name:" minWidth="100"/>
+                <mx:DataGridColumn dataField="type" headerText="Type:" width="70"/>
+                <mx:DataGridColumn dataField="size" headerText="Kb:" width="80"/>
+             
+            </mx:columns>
+
+		 	
+		</mx:FileSystemDataGrid>
+		</mx:VBox>
+		
+		
+	</mx:ViewStack>
+<!--	
+<mx:HBox width="100%" height="26" horizontalGap="2" backgroundAlpha=".50" backgroundColor="#837B67" borderColor="#A29A88" borderStyle="solid" verticalAlign="middle">
+	
+
+		<tabs:nfsTextFx id="marq" fxText="Browse for project or file..."  backgroundAlpha="0.6"/>
+		
+	</mx:HBox>
+-->
+
+	<mx:HBox width="100%" horizontalGap="2" verticalAlign="middle"  paddingLeft="2" paddingRight="2">
+		
+					
+		<mx:Button id="openBtn1" toolTip="Open a file from your computer." cornerRadius="2"   height="28" label="Load File" width="26">
+			<mx:icon>@Embed(source='assets/script_add.png')</mx:icon>
+		</mx:Button>
+		
+		<mx:Button id="b40" icon="@Embed(source='assets/script_go.png')" label="Browse for file on computer" height="28" width="26"/>
+		
+		<mx:VRule height="28" strokeWidth="1" strokeColor="white"/>
+		<mx:Button id="saveBtn" toolTip="Save a file from your computer." cornerRadius="2"   height="28" label="Save File" width="26">
+			<mx:icon>@Embed(source='assets/45.png')</mx:icon>
+		</mx:Button>
+		<mx:Button id="saveAsBtn" toolTip="Save as file to your computer." cornerRadius="2"   height="28" label="SaveAs File" width="26">
+			<mx:icon>@Embed(source='assets/46.png')</mx:icon>
+		</mx:Button>
+		<mx:VRule height="28" strokeWidth="1" strokeColor="white"/>
+		<mx:Button id="b41" click="refresh()" icon="@Embed(source='assets/view-refresh.png')" cornerRadius="2" label="Refresh system tree" height="28" width="28"/>
+		<mx:Spacer width="100%"/>
+		<mx:ToggleButtonBar dataProvider="browseViews" height="28"/>
+	</mx:HBox>		
+	
+	
+</mx:VBox>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:code="http://code.google.com/p/flexlib/" label="Bookmarks">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.*;
+            import mx.effects.easing.*;
+            import mx.controls.*;
+            import mx.events.*;
+
+			[Bindable]
+            private var folder_structure:XML =
+            <list>
+            	<folder title="Flex MXML">
+            	<item name="item1" />
+            	<item name="item2" />
+            	<item name="item3" />
+            	</folder>
+            	<folder title="Flex Actionscript">
+            	<item name="item5" />
+            	<item name="item16" />
+            	<item name="item14" />
+            	<item name="item18" />
+            	</folder>
+            	<folder title="AIR MXML">
+            	<item name="item71" />
+            	<item name="item61" />
+            	<item name="item31" />
+            	<item name="item21" />
+            	<item name="item11" />
+            	</folder>
+            	<folder title="AIR Actionscript">
+            	<item name="item231" />
+            	<item name="item144" />
+            	<item name="item91" />
+            	<item name="item21" />
+            	<item name="item711" />
+            	<item name="item221" />
+            	<item name="item1ee" />
+            	<item name="item22"/>
+            	</folder>
+            </list>;
+            [Bindable]
+			public var selectedNode:XML;
+            [Bindable]
+            private var treeData:XMLListCollection = new XMLListCollection(folder_structure.folder);
+            
+            private function treeLabel(item:Object):String {
+				var label:String = item.@label;
+		     	if (tree.dataDescriptor.hasChildren(item)) { 
+		     	label = " [" + tree.dataDescriptor.getChildren(item).length + "]"; };		
+                var node:XML = XML(item);
+                if( node.localName() == "folder" )
+                    return node.@title+label;
+                else
+                    return node.@name;
+            };
+
+            private function addNode():void {
+               if(urlName.text == ''){
+               	Alert.show('Please enter a name and/or location','Error');
+               	return;
+               }
+                var newNode:XML = <item/>;
+                newNode.@name = urlName.text;
+
+                newNode.@id = 'web';
+                var dept:XMLList =folder_structure.folder.(@title == selectedNode.@title);
+                if( dept.length() > 0 ) {
+                    dept[0].appendChild(newNode);
+                    urlName.text = "";
+                }
+                //tree.expandItem(folder_structure.getItemAt(tree.selectedIndex), true);
+          
+            }
+
+            private function removeNode():void
+            {
+                var node:XML = XML(tree.selectedItem);
+                if( node == null ) return;
+                if( node.localName() != "item" ) return;
+            
+                var children:XMLList = XMLList(node.parent()).children();
+                for(var i:Number=0; i < children.length(); i++) {
+
+                    if( children[i].@name == node.@name ) {
+                        delete children[i];
+                        Alert.show('Selected URL/Video removed from bookmarkTree','Remove Item');
+                    }
+                }
+            }
+            
+             //---------------------------
+			 //how much items per leaf in tree
+			 private function tree_labelFunc(item:XML):String {
+			     var label:String = item.@label;
+			     if (tree.dataDescriptor.hasChildren(item)) {
+			     	label += " [" + tree.dataDescriptor.getChildren(item).length + "]";
+			     }
+			     return label;
+			 };
+			 
+			private function tree_openBranchClick(evt:MouseEvent):void {
+			                var node:XML = tree.selectedItem as XML;
+			                var isOpen:Boolean = tree.isItemOpen(node);
+			                tree.expandItem(node, !isOpen, true);
+			};
+			
+			private function openAllNodes():void {
+                tree.openItems = folder_structure.folder;
+            }
+
+            private function closeAllNodes():void {
+                tree.openItems = [];
+            }
+            // Event handler for the Tree control change event.
+			public function treeChanged(event:Event):void {
+				selectedNode=Tree(event.target).selectedItem as XML;
+				//nfsText.fxText = selectedNode.@name;
+				
+			};
+			
+			 private function openAndClose():void{
+			 	if(switchBtn.label == "Close all"){
+			 		switchBtn.label = "Open all"
+			 		closeAllNodes();
+			 	}else{
+			 		switchBtn.label = "Close all"
+			 		openAllNodes();
+			 	}
+			 };
+			 
+
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" horizontalGap="2" verticalAlign="middle">
+		<code:PromptingTextInput id="urlName" width="100%" prompt="name" />
+
+		<mx:Button id="b3" icon="@Embed(source='assets/list-add.png')" width="26" height="22" cornerRadius="0" click="addNode()"/>
+		<mx:Button id="b4" width="26" icon="@Embed(source='assets/list-remove.png')" height="22" cornerRadius="0" click="removeNode()"/>
+		<mx:Spacer width="100%"/>
+		
+		<mx:Button label="Open all" id="switchBtn" height="22" click="openAndClose()" cornerRadius="0"/>
+	</mx:HBox>
+	<mx:Tree id="tree" width="100%" height="100%" dataProvider="{treeData}" labelField="@name" labelFunction="treeLabel"  styleName="fseTree"
+							  click="tree_openBranchClick(event)" change="treeChanged(event)">
+		<mx:defaultLeafIcon>@Embed(source='assets/internet-web-browser.png')</mx:defaultLeafIcon>
+							<mx:disclosureOpenIcon>@Embed(source='assets/empty.png')</mx:disclosureOpenIcon>
+							<mx:disclosureClosedIcon>@Embed(source='assets/empty.png')</mx:disclosureClosedIcon>
+							<mx:folderClosedIcon>@Embed(source='assets/folder.png')</mx:folderClosedIcon>
+							<mx:folderOpenIcon>@Embed(source='assets/document-open.png')</mx:folderOpenIcon>
+							<mx:indentation>18</mx:indentation>
+	</mx:Tree>
+	<mx:Label text="Folder: {selectedNode.@title} File: {selectedNode.@name}"/>
+</mx:VBox>

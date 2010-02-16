@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="Snippets" icon="@Embed(source='assets/preferences-desktop-font.png')"
+	 verticalGap="3" xmlns:code="http://code.google.com/p/flexlib/" horizontalScrollPolicy="off" xmlns:components="components.*" 
+	 xmlns:tabs="com.z3bb.flevi.view.tabs.*" paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" styleName="filled" borderStyle="none"
+	  creationComplete="init()" xmlns:components1="com.z3bb.flevi2010.views.components.*">
+	<mx:Metadata>
+        [Event(name="doubleClickDetected", type="flash.events.Event")]
+    </mx:Metadata>
+	
+	<mx:states>
+		<mx:State name="addSnippet">
+			<mx:SetProperty target="{addSnippet}" name="height" value="236"/>
+			<mx:SetProperty target="{b3}" name="enabled" value="false"/>
+			<mx:SetProperty target="{button1}" name="enabled" value="false"/>
+			
+			
+		</mx:State>
+		<mx:State name="optionState">
+			<mx:SetProperty target="{tabOption}" name="height" value="132"/>
+			<mx:SetProperty target="{b3}" name="enabled" value="false"/>
+			<mx:SetProperty target="{button1}" name="enabled" value="false"/>
+			
+		</mx:State>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+			
+			import mx.collections.*;
+            import mx.effects.easing.*;
+            import mx.controls.*;
+			import mx.events.*;
+			
+			import com.z3bb.flevi2010.model.ModelLocator;
+			
+			[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			
+			[Bindable]public var companyData:XMLListCollection;	
+			
+			[Bindable] 
+			public var snippetData:XML; // The external XML data
+			
+			[Bindable]
+            private var snippetCollection:XMLListCollection; //Dataprovider for Tree
+
+            [Bindable]
+			public var selectedNode:XML; //current selected item in Tree
+
+			private var loader:URLLoader;
+
+			//loadd snippetTree XML file
+			public function loadTreeData(source:String):void{
+				
+				var xml:XML = new XML();
+				loader = new URLLoader(new URLRequest(source));
+				loader.addEventListener(Event.COMPLETE, handleEvent);
+			};
+			
+			//Active after loading xml for snippetTree
+			private function handleEvent(e:Event):void{
+				snippetData = XML(URLLoader(e.target).data);
+				
+				//Alert.show('XML file COMPLETE!');
+				
+				//ADD XML to XMLListCollection!!!!!!!!!!!!
+				snippetCollection = new XMLListCollection(snippetData.node);
+				SnipTree.dataProvider = snippetData;
+			};
+			 
+			private function init():void{
+				loadTreeData('data/treeSnippetData.xml');
+			}
+			private function openAllNodes():void {
+                SnipTree.openItems = snippetData.node;
+            }
+
+            private function closeAllNodes():void {
+                SnipTree.openItems = [];
+            }
+            
+            private function openAndClose():void{
+			 	if(switchBtn.label == "Close all"){
+			 		switchBtn.label = "Open all"
+			 		closeAllNodes();
+			 	}else{
+			 		switchBtn.label = "Close all"
+			 		openAllNodes();
+			 	}
+			};
+			private function tree_openBranchClick(evt:MouseEvent):void {
+                var node:XML = SnipTree.selectedItem as XML;
+                var isOpen:Boolean = SnipTree.isItemOpen(node);
+                SnipTree.expandItem(node, !isOpen, true);
+                
+			};
+			
+			//how much items per leaf in tree
+			 private function tree_labelFunc(item:XML):String {
+			     var label:String = item.@label;
+			     if (SnipTree.dataDescriptor.hasChildren(item)) {
+			     	label += " [" + SnipTree.dataDescriptor.getChildren(item).length + "]";
+			     }
+			     return label;
+			 };
+			 
+			 // Event handler for the Tree control change event.
+			public function treeChanged(event:Event):void {
+				selectedNode=Tree(event.target).selectedItem as XML;
+				
+				if ( refOpenCheck.selected == true ) {
+					
+					//html1.location = selectedNode.@url;	
+				} else {
+					
+				}
+			};
+			
+			private function handleDouble():void {
+            	var node:XML = SnipTree.selectedItem as XML;
+            	//Check if slectedNode is not a folder
+            	if (!SnipTree.dataDescriptor.hasChildren(node)) {
+            		dispatchEvent(new Event("doubleClickDetected"));
+            		//Alert.show('Tree data: <mx:'+selectedNode.@label+'></mx:'+selectedNode.@label+'>','systemBrowser.handleDouble');
+            		
+            		var text:String ='<mx:'+selectedNode.@label+'>\n</mx:'+selectedNode.@label+'>';
+            		var targetCode:TextArea = modelLocator._currentCodeTextArea;
+					var currentTxt1:String = targetCode.text.substr(0,targetCode.selectionBeginIndex);
+					var currentTxt2:String = targetCode.text.substr(targetCode.selectionEndIndex);
+					targetCode.text = currentTxt1 + text + currentTxt2;
+            	}
+            	
+            	
+            };
+            
+
+
+		]]>
+	</mx:Script>
+	
+	<mx:transitions>
+		<mx:Transition id="tran1" fromState="*" toState="addSnippet">
+			<mx:Sequence>
+				<mx:Resize id="open" target="{addSnippet}" easingFunction="Back.easeOut" duration="1200"/>
+			</mx:Sequence>
+			
+		</mx:Transition>
+		
+		<mx:Transition id="tran2" fromState="addSnippet" toState="*">
+			<mx:Sequence>
+				<mx:Resize id="close" target="{addSnippet}" easingFunction="Back.easeIn" duration="1200"/>
+			</mx:Sequence>
+			
+		</mx:Transition>
+		
+
+		<mx:Transition id="tran3" fromState="*" toState="optionState">
+			<mx:Sequence>
+				<mx:Resize id="open1" target="{tabOption}" easingFunction="Back.easeOut"  duration="1000"/>
+			</mx:Sequence>
+			
+		</mx:Transition>
+		
+		<mx:Transition id="tran4" fromState="optionState" toState="*">
+			<mx:Sequence>
+				<mx:Resize id="close1" target="{tabOption}" easingFunction="Back.easeIn"  duration="1000"/>
+			</mx:Sequence>
+			
+		</mx:Transition>
+		
+	</mx:transitions>
+	
+	
+	
+	
+	<mx:ComboBox id="catagoryCb" width="100%" dataProvider="{modelLocator.snippetLib}" cornerRadius="2"/>
+	<mx:Tree id="SnipTree" width="100%" height="100%" styleName="fseTree" click="tree_openBranchClick(event)" change="treeChanged(event)"  labelFunction="tree_labelFunc" doubleClick="handleDouble()">
+		<mx:showRoot>false</mx:showRoot>
+		<mx:doubleClickEnabled>true</mx:doubleClickEnabled>
+		<mx:openEasingFunction>Back.easeOut</mx:openEasingFunction>
+		<mx:openDuration>400</mx:openDuration>
+		<mx:labelField>@label</mx:labelField>
+		<mx:defaultLeafIcon>@Embed(source='assets/application.png')</mx:defaultLeafIcon>
+		<mx:disclosureOpenIcon>@Embed(source='assets/empty.png')</mx:disclosureOpenIcon>
+		<mx:disclosureClosedIcon>@Embed(source='assets/empty.png')</mx:disclosureClosedIcon>
+		<mx:folderClosedIcon>@Embed(source='assets/folder.png')</mx:folderClosedIcon>
+		<mx:folderOpenIcon>@Embed(source='assets/document-open.png')</mx:folderOpenIcon>
+		<mx:indentation>18</mx:indentation>
+	</mx:Tree>
+	
+	<mx:HBox width="100%" backgroundColor="#998F77" backgroundAlpha=".50" borderColor="#A29A88" borderStyle="solid">
+		<!-- <mx:Label text="{selectedNode.@label}" width="100%" textAlign="left" color="#3B3A3A" id="selectedLabel" fontWeight="bold"/> -->
+		
+		<components1:nfsTextFx id="marq" fxText="{modelLocator.selectedNode.@label}"/>
+	
+		
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalGap="2">
+		<mx:Button id="b3" icon="@Embed(source='assets/list-add.png')" width="26" click="currentState='addSnippet'" height="26"/>
+		<mx:Button id="b4" width="26" icon="@Embed(source='assets/list-remove.png')" height="26"/>
+		
+		<mx:Button label="Open all" id="switchBtn" height="26"/>
+        <mx:Spacer width="100%"/>
+        <mx:Button width="26" click="currentState='optionState'" id="button1" icon="@Embed(source='assets/bullet_key.png')" height="26"/>
+	</mx:HBox>
+	<mx:VBox id="addSnippet" width="100%" height="0" verticalGap="3" >
+		<mx:Label text="Add new Snippet" id="label1" fontWeight="bold" color="#FFFFFF"/>
+		
+		<code:PromptingTextInput id="nsInput" width="100%" prompt="Namespace snippet"/>
+		<code:PromptingTextInput id="nameInput" width="100%" prompt="Name snippet"/>
+		<code:PromptingTextArea id="snipInput" width="100%" height="66" prompt="Type snippet data in here.."/>
+		<code:PromptingTextInput id="refUrlInput" width="100%" prompt="Reference url (optional)"/>
+		<mx:ComboBox id="secCb" width="100%" dataProvider="['Public available','Private available']" cornerRadius="2"/>
+		<mx:HBox width="100%" horizontalGap="2">
+			<mx:Button label="Save" click="currentState=''"/>
+			<mx:Button label="Cancel" click="currentState=''"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	<mx:VBox id="tabOption" width="100%" height="0" verticalGap="4" verticalScrollPolicy="off">
+		<mx:CheckBox id="refOpenCheck" label="Open Flex3 Reference"/>
+		<mx:CheckBox id="fxOn" label="Use fxTransion"/>
+		<mx:HSlider minimum="190" maximum="400" snapInterval="2" tickInterval="10" value="220" 
+             allowTrackClick="true" liveDragging="true" id="hslider1" toolTip="Default width of SnippetMenu Tab."/>
+        <mx:HSlider minimum="100" maximum="4000" snapInterval="10" tickInterval="250" value="700"
+             allowTrackClick="true" liveDragging="true" id="hslider2" toolTip="Duration of the transistion effect."/>    
+		<mx:HBox width="100%" horizontalGap="2">
+		
+			<mx:Button label="Save" click="currentState=''"/>
+			<mx:Button label="Cancel" click="currentState=''"/>
+		</mx:HBox>
+	</mx:VBox>
+	
+</mx:VBox>

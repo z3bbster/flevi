@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" fontSize="10">
+		 <mx:Script>
+  <![CDATA[
+   import mx.utils.ArrayUtil;
+   
+   [Bindable]
+   private var tempMyText:String;
+   
+   private var textArea:String;
+      
+   public var myText:String = 'Umbrella - Corperation';
+   
+   private var posMyText:int;
+   
+   private var randText:String;  // myText mixedup done in iniApp.
+   
+   private var _color:String = '#FFFFFF';
+      
+   private var writerTimer:Timer;
+   
+   public function set fxText(st:String):void {
+   		myText = st;
+   		initApp();
+   }
+   public function play():void {
+   	
+   }
+   
+   public function set textColor(clr:String):void{
+   	_color = clr;
+   };
+
+   private function initApp():void{
+    writerTimer = new Timer(15);
+    writerTimer.start();
+    writerTimer.addEventListener(TimerEvent.TIMER, timerHandler);
+    
+    posMyText = 0;
+    
+    randText = new String();
+    textArea = new String();
+    
+    var i:int;
+    for ( i = 0; i < myText.length; i++){
+     randText += new String(myText.charAt(Math.floor(Math.random()*myText.length)));
+    }
+    tempMyText = new String(randText);
+   }
+   
+   private function timerHandler(event:TimerEvent):void{
+     
+    if(myText.length > posMyText){
+     textArea += myText.charAt(posMyText);
+     posMyText++;      
+    }else{
+     writerTimer.stop();
+    }
+
+    var i:int;
+    var list:Array = new Array();
+    for ( i = posMyText; i < myText.length; i++){
+     list.push(myText.charAt(Math.floor(Math.random()*myText.length)));
+    }
+    tempMyText = textArea + list.join('');   
+   }    
+  ]]>
+ </mx:Script>
+
+ <!-- <mx:TextArea text="{tempMyText}" width="100%" height="261" fontWeight="bold" fontFamily="Arial" fontSize="25" textAlign="left" color="#ff0000" y="50"/>-->
+ <mx:Label id="lab" text="{tempMyText}" width="100%" fontWeight="bold" textAlign="left" color="#E4E4E4">
+ 	<mx:filters>
+				<mx:DropShadowFilter blurX="2" blurY="2" color="#000000" distance="1.5"  alpha=".45"/>
+			</mx:filters>
+ </mx:Label>
+ <!-- <mx:Button click="initApp()" label="run one more time"/>	-->
+</mx:VBox>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:code="http://code.google.com/p/flexlib/" verticalGap="0" 
+	  icon="@Embed(source='assets/internet-web-browser.png')">
+	<mx:states>
+		<mx:State name="metMenu">
+			<mx:SetProperty target="{topmenu}" name="height" value="30"/>
+		
+			
+			
+		</mx:State>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.easing.*;
+			import mx.controls.*;
+			//import com.z3bb.flevi.events.SearchEvent;
+
+			
+			[Bindable]
+			public var url:String = 'http://www.bbc.co.uk';
+			public function openWebsite(st:String):void {
+				url = st;
+				Alert.show('OpenWebsite New url:'+url,'htmlTab');
+			}
+			
+			private function htmlCompleteHander(event:Event):void{ 
+			
+			if (bar) bar.visible = false; 
+			if (htm.location) urlIn1.text = htm.location;
+			};
+			
+			private function htmlUrlChangeHander(event:Event):void{ 
+			
+			if(bar) bar.visible = true; 
+			
+			};
+			private function searchClick():void {
+				//var searchEvent:SearchEvent = new SearchEvent( 0, urlIn1.text);
+				//searchEvent.dispatch();
+			}
+		]]>
+	</mx:Script>
+
+	<mx:transitions>
+		<mx:Transition id="tran1" fromState="*" toState="metMenu">
+			<mx:Sequence>
+				<mx:Resize id="open" target="{topmenu}" easingFunction="Back.easeOut" duration="1200"/>
+				
+			</mx:Sequence>
+			
+		</mx:Transition>
+		
+		<mx:Transition id="tran2" fromState="metMenu" toState="*">
+			<mx:Sequence>
+				<mx:Resize id="close" target="{topmenu}" easingFunction="Back.easeIn" duration="1200"/>
+			</mx:Sequence>
+			
+		</mx:Transition>
+		
+	</mx:transitions>
+	
+	<!-- FX -->
+	<mx:Sequence id="FXin" duration="150">
+		<mx:Blur blurXFrom="2" blurXTo="0" blurYFrom="2" blurYTo="0"/>
+		
+		<mx:Fade alphaFrom="0" alphaTo="100"/>
+
+	</mx:Sequence>
+	<mx:Sequence id="FXout" duration="150">
+		<mx:Blur blurXFrom="0" blurXTo="2" blurYFrom="0" blurYTo="2"/>
+		
+		<mx:Fade alphaFrom="100" alphaTo="0"/>
+		
+	</mx:Sequence>
+	
+	<mx:HTML id="htm" location="http://nu.nl"  width="100%" height="100%" complete="htmlCompleteHander(event)" locationChange="htmlUrlChangeHander(event)"
+		  styleName="fseTree" borderStyle="none"/>
+		  
+	<mx:ApplicationControlBar id="topmenu" width="100%" height="40"  horizontalGap="2"  
+		backgroundAlpha="0.69" styleName="myControlBar1">
+		<mx:Button icon="@Embed(source='assets/go-previous.png')" width="28" click="htm.historyBack();" height="26"
+			 toolTip="Previous webpage" styleName="appButton"/>
+		<mx:Button width="28" icon="@Embed(source='assets/go-next.png')" click="htm.historyForward();"  height="26"
+			 toolTip="Next webpage" styleName="appButton"/>
+		<mx:VRule height="22" strokeWidth="1" strokeColor="white"/>
+		<mx:Button width="28" icon="@Embed(source='assets/view-refresh.png')" click="htm.reload();" height="26"
+			 toolTip="Refresh current webpage" styleName="appButton"/>
+		
+		<mx:TextInput id="urlIn1" width="360"  editable="true" click="urlIn1.text ='http://'" enter="searchClick()" height="24" fontSize="11" fontFamily="Verdana"/>
+		
+		<mx:Button width="28" icon="@Embed(source='assets/tab-new.png')" height="26" toolTip="Open webpage of current selected url" click="searchClick()" styleName="appButton"/>
+		<mx:Button width="28" icon="@Embed(source='assets/system-search.png')" height="26"  styleName="appButton"/>
+		<mx:Spacer width="100%"/>
+		<mx:ProgressBar id="bar"  indeterminate="true"  label="loading webpage data.." barColor="#ff9900" trackHeight="11" labelPlacement="center" 
+			height="26" width="180" showEffect="FXin" hideEffect="FXout" fontStyle="normal" fontWeight="normal" textAlign="center" fontFamily="GishaEmbedded" fontSize="12" color="#FF0000"/>
+	</mx:ApplicationControlBar>
+		
+	
+	
+	
+	
+	
+	
+	
+</mx:VBox>

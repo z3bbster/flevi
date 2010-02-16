@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="Clipboard" creationComplete="init()">
+<mx:Script>
+	<![CDATA[
+
+		private var _clipboard:Clipboard;
+		private var _clipboardData:String;
+		
+		private function init():void {
+			_clipboard = Clipboard.generalClipboard;
+		}
+		private function pasteNow():void {
+			var text:String =_clipboard.getData( ClipboardFormats.TEXT_FORMAT) as String;
+			var currentTxt1:String = outputTxt.text.substr(0,outputTxt.selectionBeginIndex);
+			var currentTxt2:String = outputTxt.text.substr(outputTxt.selectionEndIndex);
+			outputTxt.text = currentTxt1 + text + currentTxt2;
+		}
+		
+	]]>
+</mx:Script>
+	<mx:TextArea id="outputTxt" width="100%" height="100%"/>
+	<mx:Button label="Paste from Clipboard" click="pasteNow()"/>
+</mx:VBox>

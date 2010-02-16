@@ -1,0 +1,91 @@
+/*
+Please remember to add the following effects to the main application.
+
+	<mx:Move duration="250" id="DockerMove"/>
+	<mx:Fade duration="250" id="DockerFade"/>
+*/
+
+ApplicationControlBar {
+   highlightAlphas: 0.3, 0.09;
+   fillAlphas: 0, 0.4;
+   fillColors: #000000, #ffffff;
+   backgroundColor: #72A2C6; /*#78947B;*/
+   backgroundAlpha: 0.8;
+   shadowDistance: 2;
+}
+TitleWindow{
+  borderColor: #333333;
+   borderAlpha: 0.36;
+   roundedBottomCorners: true;
+   cornerRadius: 2;
+   backgroundAlpha: 0.7;
+   highlightAlphas: 0.3, 0.14;
+}
+.SuperNavigator{
+ dropShadowEnabled: true;
+}
+
+
+
+Docker
+{
+	paddingLeft: 0;
+	dockingAreaStyleName: "dockingArea";
+	rowStyleName: "dockingRow";
+}
+
+DockableToolBar
+{
+	addedEffect: "DockerFade";
+	borderStyle: "none";
+	horizontalGap: 2;
+	paddingBottom: 4;
+	paddingLeft: 4;
+	paddingRight: 4;
+	paddingTop: 1;
+	backgroundColor: #ACACAC;/*#ABA89F; ;*/
+	backgroundAlpha: 30;
+	
+}	
+
+.dockingArea
+{
+	horizontalScrollPolicy: "off";
+	verticalGap: 0;
+	borderStyle: "inset";
+	dropShadowEnabled: true;
+	backgroundColor: #376275;
+   	backgroundAlpha: 0.2;
+   	highlightAlphas: 0.3, 0.09;
+   fillAlphas: 0, 0.4;
+   fillColors: #000000, #ffffff;
+}
+
+.dockingRow
+{
+	horizontalGap: 1;
+	addedEffect: "DockerFade";
+	removedEffect: "DockerFade";
+}
+
+.tabNav{
+	paddingTop: 0;
+}
+
+.TabStyle{
+	paddingBottom: 4;
+	paddingLeft: 4;
+	paddingRight: 4;
+	paddingTop: 4;
+}
+.filled {
+			border-style: solid;
+			border-thickness: 0;
+			border-skin: ClassReference("components.SimpleGradientBorder");
+			fill-colors: #D1D3C5,#C2C4BF; /*#998F77 ,#c6c2b7 ; #0099FF, #000099; */
+			corner-radius: 0;
+			drop-shadow-enabled: true;
+			
+			
+}
+

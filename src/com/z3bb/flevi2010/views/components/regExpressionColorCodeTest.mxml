@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="RegExpTest" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.TextArea;
+			import com.z3bb.flevi2010.model.ModelLocator;
+		
+			[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			private var tlb:Boolean =true;
+			private var RESERVED_WORD_COLOR:String = '#ffeeee';
+			//str =str.replace(reservedTopLevel, '$1<font color="'+RESERVED_WORD_COLOR+'">'+(tlb?'<b>':")+'$2' +(tlb?'</b>':")+'</font>$3')
+			private var reservedTopLevel:RegExp =/(\s+|:)(ArgumentError|arguments|Array|Boolean|Class|Date|DefinitionError|Error|EvalError|Function|int|Math|Namespace|Number|Object|QName|RangeError|ReferenceError|RegExp|SecurityError|String|SyntaxError|TypeError|uint|URIError|VerifyError|XML|XMLList)(\s+|=|\)|,|;)/gx;
+			private var colorNodes:RegExp = /(\B<|>|:|mx|"(.*?)"|Script|Style|Application|BorderContainer|Button|ButtonBar|ButtonBarButton|CheckBox|ComboBox|DataGroup|DataRenderer|DropDownList|Group|HGroup|HScrollBar|HSlider|Label|List|NavigatorContent|NumericStepper|Panel|PopUpAnchor|PopUpPosition|RadioButton|RadioButtonGroup|ResizeMode|RichEditableText|RichText|Scroller|SkinnableContainer|SkinnableDataContainer|Spinner|TabBar|TextArea|TextInput|TextSelectionHighlighting|TileGroup|TitleWindow|ToggleButton|VGroup|VideoDisplay|VideoPlayer|VScrollBar|VSlider|Window|WindowedApplication|ArgumentError|arguments|Array|Boolean|Class|Date|DefinitionError|Error|EvalError|Function|int|Math|Namespace|Number|Object|QName|RangeError|ReferenceError|RegExp|SecurityError|String|SyntaxError|TypeError|uint|URIError|VerifyError|XML|XMLList)/g;
+			private var codetxt:String;
+			
+			private function init():void {
+			//modelLocator._currentCodeTextArea = code;
+            //code.text = '<?xml version="1.0" encoding="utf-8"?>\n<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml">\n<mx:Script>\n    <![CDATA[\n\n    ]]'+'>\n</mx:Script>\n<mx:Style source="style/Style.css"/>\n\n</mx:WindowedApplication>';
+		
+		};
+			
+			private function colorCode():void {
+				codetxt = code.text;
+				//codetxt = parseBold(codetxt);
+				codetxt = parseBold1(codetxt);
+				code1.htmlText = codetxt;
+			}
+			private function parseBold1(input:String):String{
+			    var pattern:RegExp = /mx/g;
+			    return input.replace(colorNodes, '<font color="#0099FF"><b>$1</b></font>');
+			}
+			private function parseBold(input:String):String{
+			    var pattern:RegExp = /"(.*?)"/g;
+			    
+			    return input.replace(pattern, '<b>$1</b>');
+			}
+		]]>
+	</mx:Script>
+
+
+
+	<mx:TextArea id="code" width="100%" height="100%" htmlText="Array Button" change="colorCode()" />
+	<mx:TextArea id="code1" width="100%" height="100%" />
+		
+	
+	
+		
+
+</mx:VBox>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" icon="@Embed(source='assets/text_Signature.png')"
+	 label="Style Browser" creationComplete="init()" verticalGap="3" horizontalScrollPolicy="off"
+	  paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4">
+	<mx:Script>
+        <![CDATA[
+            import mx.styles.StyleManager;
+            import mx.controls.ComboBox;
+			
+			[Bindable]
+			public var arr:Array;
+
+            private function init():void {
+                arr = StyleManager.selectors;
+                arr.sort(Array.CASEINSENSITIVE);
+            }
+
+            private function list_change(evt:Event):void {
+                var styleName:String = String(ComboBox(evt.currentTarget).selectedItem);
+                var cssStyle:CSSStyleDeclaration = StyleManager.getStyleDeclaration(styleName);
+                var obj:Object = new cssStyle.defaultFactory();
+                var styles:Array = [];
+                var key:String;
+
+                for (key in obj) {
+                    styles.push({key:key, value:obj[key]});
+                }
+
+                styles.sortOn("key", Array.CASEINSENSITIVE);
+                dataGrid.dataProvider = styles;
+            }
+        ]]>
+    </mx:Script>
+
+
+	<mx:Label text="Browse all properties of Flex components. " />
+	<mx:HRule width="100%"/>
+    <mx:ComboBox id="comboBox" prompt="Please select a style..." cornerRadius="2"
+                dataProvider="{arr}"
+                 width="100%"
+                change="list_change(event)"  height="26"/>
+    <mx:HRule width="100%"/>
+    <mx:DataGrid id="dataGrid"
+            rowHeight="22"
+            width="100%"
+            horizontalScrollPolicy="off" height="100%" styleName="fseTree1">
+        <mx:columns>
+            <mx:DataGridColumn dataField="key"
+                    headerText="Style:"
+                    itemRenderer="mx.controls.Label" />
+            <mx:DataGridColumn dataField="value"
+                    headerText="Value:"
+                    itemRenderer="mx.controls.Label" />
+        </mx:columns>
+    </mx:DataGrid>
+
+                
+
+</mx:VBox>

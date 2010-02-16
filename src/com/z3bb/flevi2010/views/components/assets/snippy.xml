@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<node label="root" snippet="">
+	<node label="Layout" snippet="">
+		<node label="ApplicationControlBar" snippet="mx:ApplicationControlBar" icon="control_icon" tab="2" url="http://livedocs.adobe.com/labs/flex3/langref/mx/containers/ApplicationControlBar.html"/>
+		<node label="Canvas" snippet="mx:Canvas" icon="control_icon" tab="0" url="http://livedocs.adobe.com/labs/flex3/langref/mx/containers/Canvas.html"/>
+		<node label="ControlBar" snippet="mx:ControlBar" icon="control_icon" tab="0" url="http://livedocs.adobe.com/labs/flex3/langref/mx/containers/ControlBar.html"/>
+		<node label="Form" snippet="mx:Form" icon="control_icon" tab="0" url=""/>
+	</node>
+	<node label="Application" snippet="BB2" c="CC2" tab="1" icon=""/>
+	<node label="Comment single line" snippet="this is comment line" c="CC3" tab="4" icon="control_icon"/>
+</node>

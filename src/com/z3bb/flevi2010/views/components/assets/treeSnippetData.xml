@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<node label="root" snippet="">
+	<node label="Layout" snippet="">
+		<node label="ApplicationControlBar" snippet="mx:ApplicationControlBar" icon="control_icon" tab="2" url="http://livedocs.adobe.com/labs/flex3/langref/mx/containers/ApplicationControlBar.html"/>
+		<node label="Canvas" snippet="mx:Canvas" icon="control_icon" tab="0" url="http://livedocs.adobe.com/labs/flex3/langref/mx/containers/Canvas.html"/>
+		<node label="ControlBar" snippet="mx:ControlBar" icon="control_icon" tab="0" url="http://livedocs.adobe.com/labs/flex3/langref/mx/containers/ControlBar.html"/>
+		<node label="Form" snippet="mx:Form" icon="control_icon" tab="0" url=""/>
+		<node label="FormHeading" snippet="mx:FormHeading" icon="control_icon" tab="0" url=""/>
+		<node label="Grid" snippet="mx:Grid" icon="control_icon" tab="0" url=""/>
+		<node label="HBox" snippet="mx:HBox" icon="control_icon" tab="0" url=""/>
+		<node label="HDividedBox" snippet="mx:HDividedBox" icon="control_icon" tab="0" url=""/>
+		<node label="HRule" snippet="mx:HRule" icon="control_icon" tab="0" url=""/>
+		<node label="ModuleLoader" snippet="mx:ModuleLoader" icon="2" tab="0" url=""/>
+		<node label="Panel" snippet="mx:Panel" icon="control_icon" tab="0" url=""/>
+		<node label="Spacer" snippet="mx:Spacer" icon="control_icon" tab="0" url=""/>
+		<node label="Tile" snippet="mx:Tile" icon="control_icon" tab="0" url=""/>
+		<node label="TitleWindow" snippet="mx:TitleWindow" icon="2" tab="0" url=""/>
+		<node label="VBox" snippet="mx:VBox" icon="control_icon" tab="0" url=""/>
+		<node label="VDividedBox" snippet="mx:VDividedBox" icon="control_icon" tab="0" url=""/>
+		<node label="VRule" snippet="mx:VRule" icon="control_icon" tab="0" url=""/>
+	</node>
+	<node label="Controls" snippet="">
+		<node label="AdvancedDataGrid" snippet="mx:AdvancedDataGrid" icon="control_icon" tab="0" url=""/>
+		<node label="Button" snippet="mx:Button" icon="control_icon" tab="0" url=""/>
+		<node label="CheckBox" snippet="mx:CheckBox" icon="control_icon" tab="0" url=""/>
+		<node label="ColorPicker" snippet="mx:ColorPicker" icon="control_icon" tab="0" url=""/>
+		<node label="ComboBox" snippet="mx:ComboBox" icon="control_icon" tab="0" url=""/>
+		<node label="DataGrid" snippet="mx:DataGrid" icon="control_icon" tab="0" url=""/>
+		<node label="DateChooser" snippet="mx:DateChooser" icon="control_icon" tab="0" url=""/>
+		<node label="DateField" snippet="mx:DateField" icon="control_icon" tab="0" url=""/>
+		<node label="HSlider" snippet="mx:HSlider" icon="control_icon" tab="0" url=""/>
+		<node label="HorizontalList" snippet="mx:HorizontalList" icon="control_icon" tab="0" url=""/>
+		<node label="Image" snippet="mx:Image" icon="control_icon" tab="0" url=""/>
+		<node label="Label" snippet="mx:Label" icon="control_icon" tab="0" url=""/>
+		<node label="LinkButton" snippet="mx:LinkButton" icon="control_icon" tab="0" url=""/>
+		<node label="List" snippet="mx:List" icon="control_icon" tab="0" url=""/>
+		<node label="NumericStepper" snippet="mx:NumericStepper" icon="control_icon" tab="0" url=""/>
+		<node label="OLAPDataGrid" snippet="mx:OLAPDataGrid" icon="control_icon" tab="0" url=""/>
+		<node label="PopUpButton" snippet="mx:PopUpButton" icon="control_icon" tab="0" url=""/>
+		<node label="PopUpButtonGroup" snippet="mx:PopUpButtonGroup" icon="control_icon" tab="0" url=""/>
+		<node label="PopUpMenuButton" snippet="mx:PopUpMenuButton" icon="control_icon" tab="0" url=""/>
+		<node label="ProgressBar" snippet="mx:ProgressBar" icon="control_icon" tab="0" url=""/>
+		<node label="RadioButton" snippet="mx:RadioButton" icon="control_icon" tab="0" url=""/>
+		<node label="RadioButtonGroup" snippet="mx:RadioButtonGroup" icon="control_icon" tab="0" url=""/>
+		<node label="RichTextEditor" snippet="mx:RichTextEditor" icon="control_icon" tab="0" url=""/>
+		<node label="SWFLoader" snippet="mx:SWFLoader" icon="control_icon" tab="0" url=""/>
+		<node label="Text" snippet="mx:Text" icon="control_icon" tab="0" url=""/>
+		<node label="TextArea" snippet="mx:TextArea" icon="control_icon" tab="0" url=""/>
+		<node label="TextInput" snippet="mx:TextInput" icon="control_icon" tab="0" url=""/>
+		<node label="TileList" snippet="mx:TileList" icon="control_icon" tab="0" url=""/>
+		<node label="Tree" snippet="mx:Tree" icon="control_icon" tab="0" url=""/>
+		<node label="VSlider" snippet="mx:VSlider" icon="control_icon" tab="0" url=""/>
+		<node label="VideoDisplay" snippet="mx:" icon="control_icon" tab="0" url=""/>
+	</node>
+	
+	<node label="Navigators" snippet="">
+		<node label="Accordion" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="ButtonBar" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="LinkBar" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="MenuBar" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="TabBar" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="TabNavigator" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="ToggleButtonBar" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+	</node>
+	
+	<node label="Effects" snippet="">
+		<node label="AddItemActionEffect" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="AnimateProperty" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Blur" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Dissolve" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Effect" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Fade" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Glow" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Iris" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Move" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Parralel" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Pause" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="RemoveItemEffect" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Resize" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Rotate" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="Sequence" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="SoundEffect" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="WipeDown" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="WipeLeft" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="WipeRight" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="WipeUp" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+	</node>
+	
+	<node label="AIR" snippet="">
+		<node label="FileSystemComboBox" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="FileSystemDataGrid" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="FileSystemHistoryButton" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="FileSystemList" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="FileSystemTree" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+		<node label="HTML" snippet="mx:VSlider" icon="control_icon" tab="0"/>
+	</node>
+	
+	<node label="Chart" snippet="">
+		<node label="AA1a" snippet="BB1b" c="CC1c" icon="control_icon"/>
+	</node>
+	
+	<node label="FlexLib" snippet="">
+		<node label="ConvertibleTreeList" snippet="ConvertibleTreeList" icon="control_icon" tab="0"/>
+		<node label="DragScrollingCanvas" snippet="DragScrollingCanvas" icon="control_icon" tab="0"/>
+		<node label="HAccordion" snippet="HAccordion" icon="control_iconn" tab="0"/>
+		<node label="HSlider" snippet="HSlider" icon="control_icon" tab="0"/>
+		<node label="ScrollableMenu" snippet="ScrollableMenu" icon="control_icon" tab="0"/>
+		<node label="SuperTabNavigator" snippet="SuperTabNavigator" icon="control_icon" tab="0"/>
+		<node label="VerticalMenuBar" snippet="VerticalMenuBar" icon="control_icon" tab="0"/>
+		<node label="UtilIcon" snippet="UtilIcon" icon="control_icon" tab="0"/>
+		
+	</node>
+	
+	<node label="Custom" snippet="">
+		<node label="AA1a" snippet="BB1b" c="CC1c" icon="control_icon"/>
+	</node>
+	
+	<node label="Application" snippet="BB2" c="CC2" tab="1" icon="no"/>
+	<node label="Comment single line" snippet="this is comment line" c="CC3" tab="4" icon="control_icon"/>
+</node>

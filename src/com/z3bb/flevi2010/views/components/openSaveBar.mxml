@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ButtonBar xmlns:mx="http://www.adobe.com/2006/mxml" height="26" buttonStyleName="dockButton" enabled="true" itemClick="ClickHandler(event)"
+	 creationComplete="appCompleteHandler()">
+	<mx:Script>
+		<![CDATA[
+			
+			import flash.filesystem.*;
+			import mx.events.*;
+			import mx.controls.Alert;
+			import com.z3bb.flevi2010.model.ModelLocator;
+			import mx.effects.easing.*;
+			import mx.events.ItemClickEvent;
+			
+			[Bindable]public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			
+			[Bindable]
+            [Embed("assets/script_go.png")]
+            private var openIcon:Class;
+
+            [Bindable]
+            [Embed("assets/45.png")]
+            private var saveIcon:Class;
+            
+            [Bindable]
+            [Embed("assets/46.png")]
+            private var saveAsIcon:Class;
+            
+            [Bindable]
+            [Embed("assets/document-new.png")]
+            private var stringIcon:Class;
+            
+            [Bindable]
+            [Embed("assets/brick_go.png")]
+            private var compilerIcon:Class;
+            
+            
+	
+			private var currentFile:File; // The currentFile opened (and saved) by the application
+			private var stream:FileStream = new FileStream(); // The FileStream object used for reading and writing the currentFile
+			private var defaultDirectory:File; // The default directory
+			
+			private function appCompleteHandler():void {
+				defaultDirectory = File.documentsDirectory;
+			}
+
+			/**
+			* Called when the user clicks the Open button. Opens a file chooser dialog box, in which the 
+			* user selects a currentFile. 
+			*/
+			private function openFile():void 
+			{	
+				var fileChooser:File;
+				if (currentFile) 
+				{
+					fileChooser = currentFile;
+				}
+				else
+				{
+					fileChooser = defaultDirectory;
+				}
+				fileChooser.browseForOpen("Open");
+				fileChooser.addEventListener(Event.SELECT, fileOpenSelected);
+			}
+			/**
+			* Called when the user selects the currentFile in the FileOpenPanel control. The method passes 
+			* File object pointing to the selected currentFile, and opens a FileStream object in read mode (with a FileMode
+			* setting of READ), and modify's the title of the application window based on the filename.
+			*/
+			private function fileOpenSelected(event:Event):void 
+			{
+				currentFile = event.target as File;
+				stream = new FileStream();
+				stream.openAsync(currentFile, FileMode.READ);
+				stream.addEventListener(Event.COMPLETE, fileReadHandler);
+				stream.addEventListener(IOErrorEvent.IO_ERROR, readIOErrorHandler);
+				modelLocator.dataChanged = false;
+				//title = "Text Editor - " + currentFile.name;
+				currentFile.removeEventListener(Event.SELECT, fileOpenSelected);
+			}
+			/**
+			* Called when the stream object has finished reading the data from the currentFile (in the openFile()
+			* method). This method reads the data as UTF data, converts the system-specific line ending characters
+			* in the data to the "\n" character, and displays the data in the mainTextField Text component.
+			*/
+			private function fileReadHandler(event:Event):void 
+			{
+				var str:String = stream.readUTFBytes(stream.bytesAvailable);
+				stream.close();
+				var lineEndPattern:RegExp = new RegExp(File.lineEnding, "g");
+				str = str.replace(lineEndPattern, "\n");
+				modelLocator._currentCodeTextArea.text = str; 
+				stream.close();
+			}
+			/**
+			* Called when the user clicks the "Save" button. The method sets up the stream object to point to
+			* the currentFile specified by the currentFile object, with save access. This method converts the "\r" and "\n" characters 
+			* in the mainTextField.text data to the system-specific line ending character, and writes the data to the currentFile.
+			*/
+			private function saveFile():void 
+			{
+				if (currentFile) {
+					if (stream != null)	
+					{
+						stream.close();
+					}
+					stream = new FileStream();
+					stream.openAsync(currentFile, FileMode.WRITE);
+					stream.addEventListener(IOErrorEvent.IO_ERROR, writeIOErrorHandler);
+					var str:String = modelLocator._currentCodeTextArea.text;
+					str = str.replace(/\r/g, "\n");
+					str = str.replace(/\n/g, File.lineEnding);
+					stream.writeUTFBytes(str);
+					stream.close();
+					modelLocator.dataChanged = false;
+				} 
+				else
+				{
+					saveAs();
+				}
+			}
+			/**
+			* Called when the user clicks the "Save As" button. Opens a Save As dialog box, in which the 
+			* user selects a currentFile path. See the FileSavePanel.mxml currentFile.
+			*/
+			private function saveAs():void 
+			{
+				var fileChooser:File;
+				if (currentFile)
+				{
+					fileChooser = currentFile;
+				}
+				else
+				{
+					fileChooser = defaultDirectory;
+				}
+				fileChooser.browseForSave("Save As");
+				fileChooser.addEventListener(Event.SELECT, saveAsFileSelected);
+			}
+			/**
+			* Called when the user selects the file path in the Save As dialog box. The method passes the selected 
+			* currentFile to the File object and calls the saveFile() method, which saves the currentFile.
+			*/
+			private function saveAsFileSelected(event:Event):void 
+			{
+				currentFile = event.target as File;
+				//title = "Text Editor - " + currentFile.name;
+				saveFile();
+				modelLocator.dataChanged = false;
+				currentFile.removeEventListener(Event.SELECT, saveAsFileSelected);
+			}
+			/**
+			* Called when the user clicks the "New" button. Initializes the state, with an undefined File object and a
+			* blank text entry field.
+			*/
+			private function newFile():void
+			{
+				currentFile = undefined;
+				modelLocator.dataChanged = false;
+				modelLocator._currentCodeTextArea.text = "";
+			}
+			/**
+			* Handles I/O errors that may come about when opening the currentFile.
+			*/
+			private function readIOErrorHandler(event:Event):void 
+			{
+				Alert.show("The specified currentFile cannot be opened.", "Error", Alert.OK, this);
+			}
+			/**
+			* Handles I/O errors that may come about when writing the currentFile.
+			*/
+			private function writeIOErrorHandler(event:Event):void 
+			{
+				Alert.show("The specified currentFile cannot be saved.", "Error", Alert.OK, this);
+			}
+			
+			;
+
+            // Event handler function to print a message
+            // describing the selected Button control.
+            private function ClickHandler(event:ItemClickEvent):void {
+                Alert.show("Selected button index: " + String(event.index),'SaveButtonClick');
+                if(event.index == 0) newFile();
+                if(event.index == 1) openFile();
+                if(event.index == 2) saveFile();
+                if(event.index == 3) saveAs(); 
+            }
+		]]>
+	</mx:Script>
+	<mx:dataProvider>
+              <mx:Array id="myArray">
+		        <mx:Object label="New" icon="{stringIcon}"  toolTip="New Script."/>
+		        <mx:Object label="Open"  icon="{openIcon}"  toolTip="Open file from your computer." />
+		        <mx:Object label="Save"  icon="{saveIcon}"  toolTip="Save current selected file to your computer."/>
+		        <mx:Object label="SaveAs"  icon="{saveAsIcon}"  toolTip="Save as current file to computer."/>
+		        
+		    </mx:Array>
+            </mx:dataProvider>
+</mx:ButtonBar>

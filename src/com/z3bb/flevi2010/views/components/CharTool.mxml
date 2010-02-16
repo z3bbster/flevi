@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="com.z3bb.flevi2010.views.components.*" backgroundColor="#ECECEC"
+	 paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" label="Characters" icon="@Embed(source='assets/text_allcaps.png')">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.effects.easing.*;
+			
+		
+//-------------------------------------------------------------------------------
+			
+			[Bindable]
+			private var charCodes:ArrayCollection;
+			
+			[Bindable]
+			private var arrColl:ArrayCollection;
+			
+			private function init():void {
+				charCodes = new ArrayCollection();
+				var i:int;
+				for (i = slider.values[0]; i <= slider.values[1]; i++) {
+					charCodes.addItem({charCodeNum:i, charCodeValue:"&#" + formatString(i) + ";",  charCodeStr:String.fromCharCode(i)});
+				}
+			}
+			
+			private function formatString(str:Object, minLength:int = 4):String {
+				return ("000000000" + str.toString()).substr(-minLength);
+			}
+			
+			
+			
+			private function doChange():void {
+				var letterArray:Array = textInput.text.split("");
+				arrColl = new ArrayCollection(letterArray);
+				dg.validateNow();
+				dg.selectedIndex = arrColl.length;
+				dg.scrollToIndex(arrColl.length);
+			}
+			
+			private function CharCode(item:Object, column:DataGridColumn):String {
+				return item.charCodeAt().toString();
+			}
+		]]>
+	</mx:Script>
+	
+	<!-- 
+	<components:colorpickerToolbar/>-->
+	<components:handyAccordion width="100%" height="100%" headerHeight="32" styleName="TabStyle" backgroundAlpha=".2" horizontalScrollPolicy="off">
+		
+ 
+		<!-- -->
+		<mx:VBox label="1. CharacterCode Summary" width="100%" height="100%" paddingTop="2" paddingBottom="2" paddingLeft="2" paddingRight="2"
+			 icon="@Embed(source='assets/book_link.png')">
+			<!-- -->
+			<mx:DataGrid id="dataGrid" dataProvider="{charCodes}" width="100%" height="100%" >
+				<mx:columns>
+					<mx:DataGridColumn dataField="charCodeStr" />
+					<mx:DataGridColumn dataField="charCodeValue" />
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:VBox width="100%" paddingLeft="4" paddingRight="4">
+				<mx:HSlider id="slider" width="100%" minimum="32" maximum="512" thumbCount="2" values="[0, 512]" liveDragging="true" snapInterval="1" tickInterval="32" dataTipPrecision="0" change="init()"/>
+				
+				<mx:Label  width="100%" textAlign="center" text="'{dataGrid.selectedItem.charCodeStr}' = {dataGrid.selectedItem.charCodeValue}" selectable="true"  fontWeight="bold"/>
+			</mx:VBox>
+			<!-- -->
+		</mx:VBox>
+		
+		
+		<!-- -->
+		<mx:VBox label="2. CharacterCode Converter" width="100%" height="100%" paddingTop="2" paddingBottom="2" paddingLeft="2" paddingRight="2"
+			 icon="@Embed(source='assets/book_go.png')" horizontalScrollPolicy="off">
+			<!-- -->
+			<mx:DataGrid id="dg" dataProvider="{arrColl}" width="100%" height="100%" horizontalScrollPolicy="off">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Character" dataField="letter" />
+					<mx:DataGridColumn headerText="Char Code" labelFunction="CharCode" />
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:TextInput id="textInput" change="doChange();" width="100%" />
+			<!-- -->
+		</mx:VBox>
+	</components:handyAccordion>
+
+
+
+</mx:VBox>

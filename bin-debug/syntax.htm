@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="sh/sh_style.min.css">
+<script src="sh/sh_main.min.js"></script>
+<script src="sh/sh_php.min.js"></script>
+
+<script>
+function highlightString(st,lang) {
+ document.getElementById('sourcecode').className = 'sh_'+lang;
+ document.getElementById('sourcecode').innerText = st;
+}
+</script>
+<pre id="sourcecode"></pre>

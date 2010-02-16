@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" label="StringConverter" paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" 
+	xmlns:code="http://code.google.com/p/flexlib/"  icon="@Embed(source='assets/38.png')">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.*;
+
+			
+			private function convertIt():void {
+				var temp:String = inputTxt.text;
+				var selectEachLine:RegExp = /\S+/gx;
+				var begin:String = StringBegin.text;
+				var end:String = StringEnd.text;
+
+				temp = parse(temp,begin,end);
+				outputTxt.text = temp;
+				Alert.show('data temp: '+ temp +' begin: '+ begin+ ' end: '+ end,'DATA');
+				
+			}
+			
+			private function parse(input:String,begin:String, end:String):String{
+			    var pattern:RegExp = /(\S+)/g;
+			    
+			    return input.replace(pattern, begin+'$1'+ end);
+			}
+			
+			private function filterWithRegExp(input:String):void {
+				var _input:String = inputTxt.text;
+				var pattern:RegExp = new RegExp(input,'g');
+				_input.replace(pattern, '---<b>$1</b>---');
+				outputTxt.htmlText = _input;
+				outputer.text = 'RegExp source: '+pattern.source;
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%">
+		
+		<code:PromptingTextInput id="searchTxt" prompt="Regular Expression" width="100%" text="(\S+)" />
+		<mx:Button styleName="dockButton" label="Excute RegExp" click="filterWithRegExp(searchTxt.text)"/>
+	</mx:HBox>
+	<mx:TextArea id="inputTxt" width="100%" height="100%" text="The world is gonna be a true place for open humans and nature."/>
+	<mx:HBox width="100%">
+		<code:PromptingTextInput id="StringBegin" prompt="Add begin String" width="100%"/>
+		<code:PromptingTextInput id="StringEnd" prompt="Add end String" width="100%"/>
+		<mx:Button id="ConvertBtn" styleName="dockButton" label="Convert All" click="convertIt()"/>
+	</mx:HBox>
+	<mx:TextArea id="outputTxt" width="100%" height="100%"/>
+	<mx:Label id="outputer"/>
+</mx:VBox>

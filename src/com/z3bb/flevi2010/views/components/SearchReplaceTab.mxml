@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:code="http://code.google.com/p/flexlib/" label="Search" backgroundColor="#ECECEC" activate="init()"
+	icon="@Embed(source='assets/system-search.png')"  paddingBottom="4" paddingTop="4" paddingLeft="4" paddingRight="4" styleName="filled" verticalGap="2" borderStyle="none">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.z3bb.flevi2010.model.ModelLocator;
+			import net.threeronec.component.textsearcher.TextSearchEvent;
+			import mx.controls.Alert;
+			import net.threeronec.component.textsearcher.Searcher;
+			
+			private var searcher:Searcher;
+			[Bindable]
+			public var modelLocator:ModelLocator = ModelLocator.getInstance();
+		
+			private function init():void{
+				
+				
+				searcher = new Searcher(modelLocator._currentCodeTextArea);
+				searcher.addEventListener(TextSearchEvent.TEXT_NOT_FOUND_REACHED_BEGINNING_FIND, reachedBeginningFind);
+				searcher.addEventListener(TextSearchEvent.TEXT_NOT_FOUND_REACHED_END_FIND, reachedEndFind);
+				searcher.addEventListener(TextSearchEvent.TEXT_NOT_FOUND_REACHED_BEGINNING_REPLACE, reachedBeginningReplace);
+				searcher.addEventListener(TextSearchEvent.TEXT_NOT_FOUND_REACHED_END_REPLACE, reachedEndReplace);
+				searcher.addEventListener(TextSearchEvent.DOES_NOT_EXIST, doesNotExist);
+			}
+			
+			private function doesNotExist(e:TextSearchEvent):void{
+				Alert.show("term does not exist!");
+			}
+			
+			private function reachedBeginningFind(e:TextSearchEvent):void{
+				if(loop.selected){
+					searcher.previous(true)
+						
+				}else{
+					Alert.show("reached beginning");
+				}
+			}
+			
+			private function reachedEndFind(e:TextSearchEvent):void{
+				if(loop.selected){
+					searcher.next(true);
+				}else{
+					Alert.show("reached end");					
+				}
+			}
+			
+			private function reachedBeginningReplace(e:TextSearchEvent):void{
+				if(loop.selected){
+					searcher.replacePrevious(ti.text, ti2.text, true)
+						
+				}else{
+					Alert.show("reached beginning");
+				}
+			}
+			
+			private function reachedEndReplace(e:TextSearchEvent):void{
+				if(loop.selected){
+					searcher.replaceNext(ti.text, ti2.text, true);
+				}else{
+					Alert.show("reached end");					
+				}
+			}
+			
+			private function onTextInput(e:Event):void{
+				searcher.string = ti.text;
+				
+				//searcher.next(true);
+			}
+			
+			private function goNext(e:MouseEvent):void{
+				searcher.next(startAtBeginning.selected);
+			}
+			
+			private function goPrevious(e:MouseEvent):void{
+				searcher.previous();
+			}
+			
+			private function goReplaceAll(e:MouseEvent):void{
+				searcher.replaceAll(ti.text, ti2.text);
+			}
+			
+			private function goReplaceNext(e:MouseEvent):void{
+				searcher.replaceNext(ti.text, ti2.text);
+			}
+			
+			private function goReplacePrevious(e:MouseEvent):void{
+				searcher.replacePrevious(ti.text, ti2.text);
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Button label="init search" click="init()"/>
+	<mx:Label text="Search and replace tool" fontSize="12" fontWeight="bold"/>
+	<code:PromptingTextInput id="ti"  prompt="Search for"  width="100%"  toolTip="Enter search term in here." click="ti.text=''" height="24" change="onTextInput(event)"/>
+	<mx:HBox width="100%" horizontalGap="2">
+		<mx:Button id="next" toolTip="'Previous Replace in current file." cornerRadius="2" icon="@Embed(source='assets/go-previous.png')" height="26" label="Prev" styleName="appButton"
+			 click="goNext(event)"/>
+		<mx:Button id="previous" toolTip="Next Replace in current file." cornerRadius="2" icon="@Embed(source='assets/go-next.png')" height="26" label="next" styleName="appButton"
+			click="goPrevious(event)"/>
+	</mx:HBox>
+	<code:PromptingTextInput id="ti2"  prompt="replace with"  width="100%" toolTip="Replace search term with this." click="ti2.text=''" height="24"/>
+	<mx:HBox width="100%" horizontalGap="2">
+	
+	<mx:Button id="replaceNext" toolTip="'Previous Replace in current file." cornerRadius="2" icon="@Embed(source='assets/go-previous.png')" height="26" label="prev" styleName="appButton"
+		 click="goReplaceNext(event)"/>
+	<mx:Button id="replacePrevious" toolTip="Next Replace in current file." cornerRadius="2" icon="@Embed(source='assets/go-next.png')" height="26" label="next" styleName="appButton"
+		 click="goReplacePrevious(event)"/>
+	</mx:HBox>
+	<mx:HRule width="100%"/>
+	<mx:HBox width="100%">
+	<mx:CheckBox label="Start at beginning" id="startAtBeginning" fontSize="11"/>
+	<mx:CheckBox label="Loopmode" id="loop" selected="true" fontSize="11"/>
+	</mx:HBox>
+	<mx:HRule width="100%"/>
+	<mx:Button id="replaceAll" label="Replace All"  toolTip="Search and Replace current file." cornerRadius="2" icon="@Embed(source='assets/edit-find-replace.png')" height="38" width="100%" 
+		click="goReplaceAll(event)"/>
+	<mx:Label text="Search String: {}"	/>
+		
+</mx:VBox>
